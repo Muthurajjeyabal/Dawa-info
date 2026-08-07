@@ -197,6 +197,108 @@ body{
 .calc-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .calc-result{margin-top:14px;padding:16px;border-radius:16px;background:linear-gradient(135deg,rgba(13,148,136,.15),rgba(20,184,166,.08));font-size:1.05rem;font-weight:600;text-align:center}
 .calc-result small{display:block;font-weight:400;font-size:.85rem;color:var(--muted);margin-top:6px}
+
+/* ===== Elder Mode (large text) ===== */
+html.elder {
+  font-size: 20px !important;
+}
+html.elder body {
+  font-size: 1.125rem !important;
+  line-height: 1.6 !important;
+}
+html.elder h1, html.elder .hdr h1, html.elder #appTitle {
+  font-size: 1.6rem !important;
+}
+html.elder input,
+html.elder textarea,
+html.elder select,
+html.elder .calc-in,
+html.elder .lang-sel,
+html.elder #q {
+  font-size: 1.25rem !important;
+  padding: 16px 18px !important;
+  min-height: 52px !important;
+}
+html.elder .btn,
+html.elder button.btn {
+  font-size: 1.15rem !important;
+  padding: 16px 20px !important;
+  min-height: 52px !important;
+}
+html.elder .bnav button {
+  font-size: 0.8rem !important;
+  padding: 10px 2px !important;
+}
+html.elder .bnav button span {
+  font-size: 1.55rem !important;
+}
+html.elder .card,
+html.elder .box,
+html.elder .section,
+html.elder #results,
+html.elder #results * {
+  font-size: 1.1rem !important;
+  line-height: 1.55 !important;
+}
+html.elder .section h3 {
+  font-size: 1.25rem !important;
+}
+html.elder .chip {
+  font-size: 1rem !important;
+  padding: 12px 16px !important;
+}
+html.elder .badge {
+  font-size: 0.9rem !important;
+}
+html.elder .icon-btn {
+  width: 48px !important;
+  height: 48px !important;
+  font-size: 1.3rem !important;
+}
+html.elder .elder-btn {
+  font-size: 1rem !important;
+  padding: 12px 14px !important;
+  background: #0d9488 !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  border-color: #0d9488 !important;
+}
+html.elder.elder-contrast {
+  --text: #000000 !important;
+  --muted: #222222 !important;
+  --bg: #f0f0f0 !important;
+  --bg2: #ffffff !important;
+  --card: #ffffff !important;
+  --card-solid: #ffffff !important;
+  --border: #111111 !important;
+  --primary: #065f56 !important;
+}
+html.elder.elder-contrast[data-theme="dark"] {
+  --text: #ffffff !important;
+  --muted: #e5e5e5 !important;
+  --bg: #000000 !important;
+  --bg2: #0a0a0a !important;
+  --card: #111111 !important;
+  --card-solid: #111111 !important;
+  --border: #cccccc !important;
+  --primary: #5eead4 !important;
+}
+.elder-btn {
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 8px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+.elder-btn.on {
+  background: #0d9488 !important;
+  color: #fff !important;
+  border-color: #0d9488 !important;
+}
+
 </style>
 </head>
 <body>
@@ -1512,9 +1614,19 @@ try{ elderMode = localStorage.getItem("medElder")==="1"; }catch(e){}
 function applyElder(){
   document.documentElement.classList.toggle("elder", !!elderMode);
   document.documentElement.classList.toggle("elder-contrast", !!elderMode);
+  // Force visible size change even if some CSS is overridden
+  if(elderMode){
+    document.body.style.fontSize = "20px";
+    document.body.style.lineHeight = "1.65";
+  } else {
+    document.body.style.fontSize = "";
+    document.body.style.lineHeight = "";
+  }
   const b = document.getElementById("elderBtn");
-  if(b) b.textContent = elderMode ? "Aa+" : "Aa";
-  if(b) b.classList.toggle("on", !!elderMode);
+  if(b){
+    b.textContent = elderMode ? "Aa+" : "Aa";
+    b.classList.toggle("on", !!elderMode);
+  }
   // Simplify bottom nav labels when elder
   try{
     document.querySelectorAll(".bnav button").forEach(function(btn){
