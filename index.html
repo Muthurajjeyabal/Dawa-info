@@ -192,6 +192,11 @@ body{
   max-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 
+
+.calc-in{width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);margin-bottom:10px;font-size:1rem}
+.calc-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.calc-result{margin-top:14px;padding:16px;border-radius:16px;background:linear-gradient(135deg,rgba(13,148,136,.15),rgba(20,184,166,.08));font-size:1.05rem;font-weight:600;text-align:center}
+.calc-result small{display:block;font-weight:400;font-size:.85rem;color:var(--muted);margin-top:6px}
 </style>
 </head>
 <body>
@@ -267,6 +272,20 @@ body{
     <div id="compareResult"></div>
   </div>
 
+
+  <!-- CALCULATORS PAGE -->
+  <div id="page-calc" class="page">
+    <div class="hdr"><h1 id="calcHdr">🧮 Health</h1></div>
+    <div class="chips" id="calcTabs" style="margin-bottom:12px">
+      <span class="chip on" data-calc="bmi" onclick="showCalc('bmi')">BMI</span>
+      <span class="chip" data-calc="bmr" onclick="showCalc('bmr')">BMR</span>
+      <span class="chip" data-calc="water" onclick="showCalc('water')">Water</span>
+      <span class="chip" data-calc="ideal" onclick="showCalc('ideal')">Ideal Wt</span>
+      <span class="chip" data-calc="preg" onclick="showCalc('preg')">Due Date</span>
+      <span class="chip" data-calc="hr" onclick="showCalc('hr')">Heart Zone</span>
+    </div>
+    <div id="calcBody"></div>
+  </div>
   <!-- REMINDERS PAGE -->
   <div id="page-remind" class="page">
     <div class="hdr"><h1 id="remHdr">⏰ Reminder</h1></div>
@@ -363,6 +382,7 @@ body{
 <nav class="bnav">
   <button class="on" data-page="search" onclick="navTo('search')"><span>🔍</span>Search</button>
   <button data-page="compare" onclick="navTo('compare')"><span>⚖️</span>Compare</button>
+  <button data-page="calc" onclick="navTo('calc')"><span>🧮</span>Health</button>
   <button data-page="remind" onclick="navTo('remind')"><span>⏰</span>Remind</button>
   <button data-page="fav" onclick="navTo('fav')"><span>❤️</span>Favorites</button>
   <button data-page="recent" onclick="navTo('recent')"><span>🕐</span>Recent</button>
@@ -1266,6 +1286,7 @@ function setLang(code){
   document.querySelectorAll(".bnav button").forEach(function(b){
     if(b.dataset.page==="search") b.innerHTML = "<span>🔍</span>"+t("search");
     if(b.dataset.page==="compare") b.innerHTML = "<span>⚖️</span>"+t("compare");
+    if(b.dataset.page==="calc") b.innerHTML = "<span>🧮</span>Health";
     if(b.dataset.page==="remind") b.innerHTML = "<span>⏰</span>"+t("remind");
     if(b.dataset.page==="fav") b.innerHTML = "<span>❤️</span>"+t("fav");
     if(b.dataset.page==="recent") b.innerHTML = "<span>🕐</span>"+t("recent");
@@ -1276,7 +1297,8 @@ function setLang(code){
     const nav = document.querySelectorAll(".bnav button");
     // already updated above partially - ensure remind label
     nav.forEach(b=>{
-      if(b.dataset.page==="remind") b.innerHTML = "<span>⏰</span>"+t("remind");
+      if(b.dataset.page==="calc") b.innerHTML = "<span>🧮</span>Health";
+    if(b.dataset.page==="remind") b.innerHTML = "<span>⏰</span>"+t("remind");
       if(b.dataset.page==="search") b.innerHTML = "<span>🔍</span>"+t("search");
       if(b.dataset.page==="compare") b.innerHTML = "<span>⚖️</span>"+t("compare");
       if(b.dataset.page==="fav") b.innerHTML = "<span>❤️</span>"+t("fav");
@@ -1328,23 +1350,28 @@ function isRx(ings, med){
   return false;
 }
 
-function findAlternatives(med, limit=5){
-  const comp = (med.c||"").toLowerCase();
-  // primary salt
+function findAlternatives(med, limit=8){
+  const comp = (med.c||"").toLowerCase().replace(/\s+/g," ");
   let primary = "";
   for(const k of Object.keys(ING)){
     if(comp.includes(k)){ primary=k; break; }
   }
   if(!primary) return [];
+  // prefer similar composition length (same combo vs single)
+  const baseParts = (med.c||"").split(/\+|\//).map(s=>s.trim().toLowerCase()).filter(Boolean).length;
   const alts = [];
   for(const m of M){
     if(m.n===med.n) continue;
-    if((m.c||"").toLowerCase().includes(primary)){
-      alts.push(m);
-      if(alts.length>=limit) break;
-    }
+    const mc = (m.c||"").toLowerCase();
+    if(!mc.includes(primary)) continue;
+    const parts = (m.c||"").split(/\+|\//).map(s=>s.trim()).filter(Boolean).length;
+    const price = parseFloat(m.p)||9999;
+    // score: same number of ingredients better, then cheaper
+    const score = Math.abs(parts-baseParts)*1000 + price;
+    alts.push({m, score, price});
   }
-  return alts;
+  alts.sort((a,b)=>a.score-b.score);
+  return alts.slice(0, limit).map(x=>x.m);
 }
 
 /* ========== RENDER CARD ========== */
@@ -1465,8 +1492,15 @@ function openDetail(name){
     </div>
 
     <div class="section">
-      <h3>🔄 ${t("alternatives")}</h3>
-      <div class="box">${alts.length?alts.map(a=>`<div style="padding:6px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="openDetail('${escAttr(a.n)}')"><strong>${esc(a.n)}</strong> · ₹${esc(a.p||"—")} · ${esc(a.m||"")}</div>`).join(""):"No close alternatives in local data."}</div>
+      <h3>🔄 ${t("alternatives")} · Same salt · Cheaper first</h3>
+      <div class="box">${alts.length?alts.map((a,i)=>{
+        const myP = parseFloat(med.p)||0;
+        const ap = parseFloat(a.p)||0;
+        let tag = "";
+        if(ap && myP && ap < myP) tag = ' <span class="badge otc">↓ ₹'+(myP-ap).toFixed(0)+' cheaper</span>';
+        else if(ap && myP && ap > myP) tag = ' <span class="badge">+₹'+(ap-myP).toFixed(0)+'</span>';
+        return `<div style="padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="openDetail('${escAttr(a.n)}')"><strong>${esc(a.n)}</strong>${tag}<br><span style="font-size:.8rem;color:var(--muted)">₹${esc(a.p||"—")} · ${esc(a.m||"")}</span></div>`;
+      }).join(""):"No close alternatives in local data."}</div>
     </div>
 
     <div class="row-actions" style="margin-top:20px">
@@ -1674,6 +1708,7 @@ function navTo(page){
   document.querySelectorAll(".bnav button").forEach(b=>{
     b.classList.toggle("on", b.dataset.page===page);
   });
+  if(page==="calc"){ showCalc("bmi"); }
   if(page==="fav") renderFavs();
   if(page==="recent") renderRecent();
   if(page==="remind"){ remFreqChange(); renderReminders(); tryRequestNotif(); }
@@ -1689,6 +1724,135 @@ function navTo(page){
   }
 }
 
+
+
+function showCalc(type){
+  document.querySelectorAll('#calcTabs .chip').forEach(c=>c.classList.toggle('on', c.dataset.calc===type));
+  const b = document.getElementById('calcBody');
+  if(type==='bmi'){
+    b.innerHTML = `<div class="card">
+      <div class="calc-row">
+        <div><div style="font-size:.8rem;color:var(--muted)">Height (cm)</div><input class="calc-in" id="bmiH" type="number" value="170"></div>
+        <div><div style="font-size:.8rem;color:var(--muted)">Weight (kg)</div><input class="calc-in" id="bmiW" type="number" value="65"></div>
+      </div>
+      <button class="btn primary" style="width:100%" onclick="runBMI()">Calculate BMI</button>
+      <div id="bmiOut" class="calc-result" style="display:none"></div>
+    </div>`;
+  } else if(type==='bmr'){
+    b.innerHTML = `<div class="card">
+      <div class="calc-row">
+        <div><div style="font-size:.8rem;color:var(--muted)">Age</div><input class="calc-in" id="bmrA" type="number" value="30"></div>
+        <div><div style="font-size:.8rem;color:var(--muted)">Weight (kg)</div><input class="calc-in" id="bmrW" type="number" value="65"></div>
+      </div>
+      <div class="calc-row">
+        <div><div style="font-size:.8rem;color:var(--muted)">Height (cm)</div><input class="calc-in" id="bmrH" type="number" value="170"></div>
+        <div><div style="font-size:.8rem;color:var(--muted)">Sex</div>
+          <select class="calc-in" id="bmrS"><option value="m">Male</option><option value="f">Female</option></select>
+        </div>
+      </div>
+      <button class="btn primary" style="width:100%" onclick="runBMR()">Calculate BMR</button>
+      <div id="bmrOut" class="calc-result" style="display:none"></div>
+    </div>`;
+  } else if(type==='water'){
+    b.innerHTML = `<div class="card">
+      <div style="font-size:.8rem;color:var(--muted)">Weight (kg)</div>
+      <input class="calc-in" id="watW" type="number" value="65">
+      <div style="font-size:.8rem;color:var(--muted)">Activity</div>
+      <select class="calc-in" id="watA">
+        <option value="30">Low</option>
+        <option value="35" selected>Moderate</option>
+        <option value="40">High / Hot climate</option>
+      </select>
+      <button class="btn primary" style="width:100%" onclick="runWater()">Water need</button>
+      <div id="watOut" class="calc-result" style="display:none"></div>
+    </div>`;
+  } else if(type==='ideal'){
+    b.innerHTML = `<div class="card">
+      <div class="calc-row">
+        <div><div style="font-size:.8rem;color:var(--muted)">Height (cm)</div><input class="calc-in" id="idH" type="number" value="170"></div>
+        <div><div style="font-size:.8rem;color:var(--muted)">Sex</div>
+          <select class="calc-in" id="idS"><option value="m">Male</option><option value="f">Female</option></select>
+        </div>
+      </div>
+      <button class="btn primary" style="width:100%" onclick="runIdeal()">Ideal weight</button>
+      <div id="idOut" class="calc-result" style="display:none"></div>
+    </div>`;
+  } else if(type==='preg'){
+    b.innerHTML = `<div class="card">
+      <div style="font-size:.8rem;color:var(--muted)">First day of last period (LMP)</div>
+      <input class="calc-in" id="pregLMP" type="date">
+      <button class="btn primary" style="width:100%" onclick="runPreg()">Due date</button>
+      <div id="pregOut" class="calc-result" style="display:none"></div>
+    </div>`;
+  } else if(type==='hr'){
+    b.innerHTML = `<div class="card">
+      <div style="font-size:.8rem;color:var(--muted)">Age</div>
+      <input class="calc-in" id="hrA" type="number" value="30">
+      <button class="btn primary" style="width:100%" onclick="runHR()">Heart rate zones</button>
+      <div id="hrOut" class="calc-result" style="display:none"></div>
+    </div>`;
+  }
+}
+function runBMI(){
+  const h = parseFloat(document.getElementById('bmiH').value)/100;
+  const w = parseFloat(document.getElementById('bmiW').value);
+  if(!h||!w) return;
+  const bmi = w/(h*h);
+  let cat = 'Normal';
+  if(bmi<18.5) cat='Underweight';
+  else if(bmi>=25 && bmi<30) cat='Overweight';
+  else if(bmi>=30) cat='Obese';
+  const o = document.getElementById('bmiOut');
+  o.style.display='block';
+  o.innerHTML = bmi.toFixed(1)+' BMI<small>'+cat+'</small>';
+}
+function runBMR(){
+  const a=parseFloat(document.getElementById('bmrA').value);
+  const w=parseFloat(document.getElementById('bmrW').value);
+  const h=parseFloat(document.getElementById('bmrH').value);
+  const s=document.getElementById('bmrS').value;
+  // Mifflin-St Jeor
+  let bmr = 10*w + 6.25*h - 5*a + (s==='m'?5:-161);
+  const o=document.getElementById('bmrOut');
+  o.style.display='block';
+  o.innerHTML = Math.round(bmr)+' kcal/day<small>Sedentary ×1.2 = '+Math.round(bmr*1.2)+' · Active ×1.55 = '+Math.round(bmr*1.55)+'</small>';
+}
+function runWater(){
+  const w=parseFloat(document.getElementById('watW').value);
+  const ml=parseFloat(document.getElementById('watA').value);
+  const total = w*ml;
+  const o=document.getElementById('watOut');
+  o.style.display='block';
+  o.innerHTML = (total/1000).toFixed(1)+' L / day<small>~'+Math.round(total)+' ml · '+Math.round(total/250)+' glasses (250ml)</small>';
+}
+function runIdeal(){
+  const h=parseFloat(document.getElementById('idH').value);
+  const s=document.getElementById('idS').value;
+  // Devine formula
+  const inches = h/2.54;
+  let ideal = s==='m' ? 50 + 2.3*(inches-60) : 45.5 + 2.3*(inches-60);
+  const o=document.getElementById('idOut');
+  o.style.display='block';
+  o.innerHTML = ideal.toFixed(1)+' kg<small>Healthy BMI range ~ '+(18.5*(h/100)*(h/100)).toFixed(1)+' – '+(24.9*(h/100)*(h/100)).toFixed(1)+' kg</small>';
+}
+function runPreg(){
+  const v=document.getElementById('pregLMP').value;
+  if(!v) return;
+  const lmp=new Date(v);
+  const due=new Date(lmp.getTime()+280*24*3600*1000);
+  const today=new Date();
+  const weeks=Math.floor((today-lmp)/(7*24*3600*1000));
+  const o=document.getElementById('pregOut');
+  o.style.display='block';
+  o.innerHTML = due.toLocaleDateString()+'<small>Approx week: '+Math.max(0,weeks)+' · Naegele rule (+280 days)</small>';
+}
+function runHR(){
+  const a=parseFloat(document.getElementById('hrA').value);
+  const max=220-a;
+  const o=document.getElementById('hrOut');
+  o.style.display='block';
+  o.innerHTML = 'Max ~'+max+' bpm<small>Fat burn 50–70%: '+Math.round(max*0.5)+'–'+Math.round(max*0.7)+' · Cardio 70–85%: '+Math.round(max*0.7)+'–'+Math.round(max*0.85)+'</small>';
+}
 
 /* ========== REMINDERS ========== */
 let reminders = safeGet("medReminders", []);
