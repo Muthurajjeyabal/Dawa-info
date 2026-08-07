@@ -1686,7 +1686,7 @@ function checkInteraction(medA, medB){
     if((sa.includes(rule.a)&&sb.includes(rule.b))||(sa.includes(rule.b)&&sb.includes(rule.a))) hits.push(rule);
   }
   if(!hits.length) return {level:"green", msg:"No common interaction in our short list. Not a full safety check — ask pharmacist/doctor."};
-  hits.sort((a,b)=>({red:0,yellow:1,green:2}[a.level]-({red:0,yellow:1,green:2}[b.level]));
+  hits.sort(function(a,b){ var o={red:0,yellow:1,green:2}; return o[a.level]-o[b.level]; });
   return hits[0];
 }
 function runInteraction(){
