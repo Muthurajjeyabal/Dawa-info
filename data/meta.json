@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "core": 4000,
+  "total": 241954,
+  "chunks": {
+    "0": [
+      "chunk-0.json"
+    ],
+    "a": [
+      "chunk-a-0.json",
+      "chunk-a-1.json",
+      "chunk-a-2.json",
+      "chunk-a-3.json",
+      "chunk-a-4.json",
+      "chunk-a-5.json"
+    ],
+    "b": [
+      "chunk-b-0.json",
+      "chunk-b-1.json"
+    ],
+    "c": [
+      "chunk-c-0.json",
+      "chunk-c-1.json",
+      "chunk-c-2.json",
+      "chunk-c-3.json",
+      "chunk-c-4.json",
+      "chunk-c-5.json"
+    ],
+    "d": [
+      "chunk-d-0.json",
+      "chunk-d-1.json",
+      "chunk-d-2.json",
+      "chunk-d-3.json"
+    ],
+    "e": [
+      "chunk-e-0.json",
+      "chunk-e-1.json",
+      "chunk-e-2.json"
+    ],
+    "f": [
+      "chunk-f-0.json",
+      "chunk-f-1.json",
+      "chunk-f-2.json"
+    ],
+    "g": [
+      "chunk-g-0.json",
+      "chunk-g-1.json",
+      "chunk-g-2.json"
+    ],
+    "h": [
+      "chunk-h.json"
+    ],
+    "i": [
+      "chunk-i-0.json",
+      "chunk-i-1.json"
+    ],
+    "j": [
+      "chunk-j.json"
+    ],
+    "k": [
+      "chunk-k-0.json",
+      "chunk-k-1.json"
+    ],
+    "l": [
+      "chunk-l-0.json",
+      "chunk-l-1.json",
+      "chunk-l-2.json"
+    ],
+    "m": [
+      "chunk-m-0.json",
+      "chunk-m-1.json",
+      "chunk-m-2.json",
+      "chunk-m-3.json",
+      "chunk-m-4.json"
+    ],
+    "n": [
+      "chunk-n-0.json",
+      "chunk-n-1.json",
+      "chunk-n-2.json"
+    ],
+    "o": [
+      "chunk-o-0.json",
+      "chunk-o-1.json",
+      "chunk-o-2.json"
+    ],
+    "p": [
+      "chunk-p-0.json",
+      "chunk-p-1.json",
+      "chunk-p-2.json"
+    ],
+    "q": [
+      "chunk-q.json"
+    ],
+    "r": [
+      "chunk-r-0.json",
+      "chunk-r-1.json",
+      "chunk-r-2.json",
+      "chunk-r-3.json"
+    ],
+    "s": [
+      "chunk-s-0.json",
+      "chunk-s-1.json",
+      "chunk-s-2.json",
+      "chunk-s-3.json"
+    ],
+    "t": [
+      "chunk-t-0.json",
+      "chunk-t-1.json",
+      "chunk-t-2.json",
+      "chunk-t-3.json"
+    ],
+    "u": [
+      "chunk-u.json"
+    ],
+    "v": [
+      "chunk-v-0.json",
+      "chunk-v-1.json"
+    ],
+    "w": [
+      "chunk-w.json"
+    ],
+    "x": [
+      "chunk-x.json"
+    ],
+    "y": [
+      "chunk-y.json"
+    ],
+    "z": [
+      "chunk-z-0.json",
+      "chunk-z-1.json"
+    ]
+  },
+  "chunkItems": 237954
+}
