@@ -6564,7 +6564,7 @@ function openDetail(name){
         <span class="val ${riskClass(v.l)}">${riskEmoji(v.l)} ${esc(txt)}</span></div>`;
     }).join("") + `</div>`;
   } else {
-    safetyHtml = `<p class="box">${t("safetyNA")||"${t("safetyNA")||"Detailed safety profile not available for this composition. Ask a doctor/pharmacist."}"}</p>`;
+    safetyHtml = `<p class="box">${t("safetyNA")||"Detailed safety profile not available for this composition. Ask a doctor or pharmacist."}</p>`;
   }
 
   let ingScores = ings.map(i=>`<div style="margin-bottom:6px">${riskEmoji(overallRisk([i]))} <strong>${esc(i.info.generic)}</strong></div>`).join("")
