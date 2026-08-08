@@ -2148,9 +2148,61 @@ function runCompareFromSelect(){
   renderCompare();
 }
 
+
+function shareCompare(){
+  if(!cmpSel || cmpSel.length < 2){ alert(t("select2")); return; }
+  const a = allSearchable().find(m => m.n === cmpSel[0]);
+  const b = allSearchable().find(m => m.n === cmpSel[1]);
+  if(!a || !b) return;
+
+  const ia = parseIngredients(a.c);
+  const ib = parseIngredients(b.c);
+  const pa = ia[0] ? ia[0].info : null;
+  const pb = ib[0] ? ib[0].info : null;
+
+  const lines = [
+    "⚖️ " + t("cmpTitle"),
+    "",
+    "💊 " + a.n,
+    "   " + (pa ? pa.generic : a.c),
+    "   ₹" + (a.p || "—") + (a.k ? " · " + a.k : ""),
+    "   " + t("uses") + ": " + ((pa && pa.uses) || a.u || "—"),
+    "",
+    "vs",
+    "",
+    "💊 " + b.n,
+    "   " + (pb ? pb.generic : b.c),
+    "   ₹" + (b.p || "—") + (b.k ? " · " + b.k : ""),
+    "   " + t("uses") + ": " + ((pb && pb.uses) || b.u || "—"),
+    "",
+    "⚠️ " + t("disclaimer"),
+    "",
+    "— Dawa Info / தவா இன்போ"
+  ];
+  const text = lines.join("\n");
+  const title = a.n + " vs " + b.n;
+
+  if(navigator.share){
+    navigator.share({ title: title, text: text }).catch(function(){});
+    return;
+  }
+  // Fallback
+  try{
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){
+        alert(t("share") + " ✓\n\nCopied. Paste in WhatsApp / any app.");
+      }).catch(function(){});
+    } else {
+      prompt("Copy this:", text);
+    }
+  }catch(e){
+    prompt("Copy this:", text);
+  }
+}
+
 function renderCompare(){
-  const a = M.find(m=>m.n===cmpSel[0]);
-  const b = M.find(m=>m.n===cmpSel[1]);
+  const a = allSearchable().find(m=>m.n===cmpSel[0]);
+  const b = allSearchable().find(m=>m.n===cmpSel[1]);
   if(!a||!b){ document.getElementById("compareResult").innerHTML='<div class="empty"><span>⚖️</span>'+t("select2")+'</div>'; return; }
   const ia = parseIngredients(a.c);
   const ib = parseIngredients(b.c);
@@ -2179,6 +2231,7 @@ function renderCompare(){
           ${rows.map(r=>`<tr><th>${esc(r[0])}</th><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join("")}
         </tbody>
       </table>
+      <button class="btn primary" style="width:100%;margin-top:14px;padding:12px" onclick="shareCompare()">📤 ${t("share")}</button>
     </div>`;
 }
 
