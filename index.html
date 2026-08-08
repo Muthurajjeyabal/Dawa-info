@@ -452,7 +452,12 @@ html.elder.elder-contrast[data-theme="dark"] {
 .splash-inner{text-align:center;color:#fff;animation:splashIn .6s cubic-bezier(.22,1,.36,1) both}
 .splash-icon{font-size:3.2rem;margin-bottom:12px;filter:drop-shadow(0 8px 20px rgba(0,0,0,.2));animation:softPop .8s ease .2s both}
 .splash-title{font-size:1.75rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:4px}
-.splash-sub{font-size:.95rem;opacity:.85;font-weight:500;margin-bottom:28px;letter-spacing:0.02em}
+.splash-sub{font-size:.95rem;opacity:.85;font-weight:500;margin-bottom:10px;letter-spacing:0.02em}
+.splash-brand{font-size:.8rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.95;margin-bottom:4px}
+.splash-tag{font-size:.68rem;opacity:.7;letter-spacing:.04em;margin-bottom:24px;font-weight:500}
+.app-brand-line{font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);opacity:.8;margin-top:1px}
+.hdr-left{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
+
 .splash-loader{
   width:36px;height:36px;margin:0 auto;
   border:3px solid rgba(255,255,255,.25);
@@ -592,6 +597,8 @@ body{
     <div class="splash-icon">💊</div>
     <div class="splash-title">Dawa Info</div>
     <div class="splash-sub">தவா இன்போ</div>
+    <div class="splash-brand">JMR Apps</div>
+    <div class="splash-tag">Smart apps · Better life</div>
     <div class="splash-loader"></div>
   </div>
 </div>
@@ -599,7 +606,10 @@ body{
   <!-- SEARCH PAGE -->
   <div id="page-search" class="page on">
     <div class="hdr">
-      <h1 id="appTitle">💊 Dawa Info</h1>
+      <div class="hdr-left">
+        <h1 id="appTitle">💊 Dawa Info</h1>
+        <div class="app-brand-line">by JMR Apps</div>
+      </div>
       <div class="hdr-actions">
         <button type="button" class="lang-sel" id="langBtn" onclick="openLangPicker()">English ▾</button>
         <select id="lang" style="display:none">
@@ -6371,7 +6381,7 @@ function shareMedicine(name){
     "",
     "⚠️ " + t("disclaimer"),
     "",
-    "— Dawa Info / தவா இன்போ"
+    "— Dawa Info · JMR Apps"
   ].filter(Boolean);
   const text = lines.join("\n");
   const title = med.n;
@@ -6852,7 +6862,7 @@ function shareCompare(){
     "",
     "⚠️ " + t("disclaimer"),
     "",
-    "— Dawa Info / தவா இன்போ"
+    "— Dawa Info · JMR Apps"
   ];
   const text = lines.join("\n");
   const title = a.n + " vs " + b.n;
