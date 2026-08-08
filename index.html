@@ -558,40 +558,76 @@ function queryLetter(q){
   const m = (q||'').toLowerCase().match(/[a-z]/);
   return m ? m[0] : null;
 }
+async function fetchWithTimeout(url, ms){
+  const ctrl = typeof AbortController!=="undefined" ? new AbortController() : null;
+  const t = setTimeout(function(){ try{ if(ctrl) ctrl.abort(); }catch(e){} }, ms||8000);
+  try{
+    const r = await fetch(url, {cache:"force-cache", signal: ctrl ? ctrl.signal : undefined});
+    clearTimeout(t);
+    return r;
+  }catch(e){
+    clearTimeout(t);
+    throw e;
+  }
+}
 async function ensureChunksForQuery(q){
   const letter = queryLetter(q);
   if(!letter) return 0;
-  const meta = await loadMeta();
-  const files = (meta.chunks && meta.chunks[letter]) || [];
+  let meta;
+  try{
+    meta = await Promise.race([
+      loadMeta(),
+      new Promise(function(res){ setTimeout(function(){ res(META || {chunks:{}}); }, 3000); })
+    ]);
+  }catch(e){ return 0; }
+  const files = (meta && meta.chunks && meta.chunks[letter]) || [];
   if(!files.length) return 0;
   let loadedNew = 0;
-  for(const fname of files){
+  // load at most 2 chunk files quickly; rest in background
+  const pending = [];
+  for(let i=0;i<files.length;i++){
+    const fname = files[i];
     if(loadedChunkFiles.has(fname)) continue;
-    let data = await idbGet(fname);
-    if(!data){
-      try{
-        const r = await fetch(DATA_BASE + fname, {cache:'force-cache'});
-        if(!r.ok) continue;
-        data = await r.json();
-        await idbSet(fname, data);
-        loadedNew++;
-      }catch(e){ continue; }
-    }
-    if(Array.isArray(data)){
-      const have = new Set(extraMeds.map(x=>x.n));
-      // also avoid core dups
-      for(const m of M) have.add(m.n);
-      for(const item of data){
-        if(item && item.n && !have.has(item.n)){
-          extraMeds.push(item);
-          have.add(item.n);
-        }
+    const job = (async function(fname, urgent){
+      let data = await idbGet(fname);
+      if(!data){
+        try{
+          const r = await fetchWithTimeout(DATA_BASE + fname, urgent ? 6000 : 10000);
+          if(!r.ok) return 0;
+          data = await r.json();
+          await idbSet(fname, data);
+        }catch(e){ return 0; }
       }
-      loadedChunkFiles.add(fname);
+      if(Array.isArray(data)){
+        const have = new Set(extraMeds.map(function(x){ return x.n; }));
+        for(let mi=0;mi<M.length;mi++) have.add(M[mi].n);
+        for(let j=0;j<data.length;j++){
+          const item = data[j];
+          if(item && item.n && !have.has(item.n)){
+            extraMeds.push(item);
+            have.add(item.n);
+          }
+        }
+        loadedChunkFiles.add(fname);
+        return 1;
+      }
+      return 0;
+    })(fname, loadedNew < 2);
+    if(loadedNew < 2){
+      loadedNew += await job;
+    } else {
+      pending.push(job);
     }
+  }
+  // background
+  if(pending.length){
+    Promise.all(pending).then(function(){
+      // optional: user may search again
+    }).catch(function(){});
   }
   return loadedNew;
 }
+
 function allSearchable(){
   return extraMeds.length ? M.concat(extraMeds) : M;
 }
@@ -1961,32 +1997,45 @@ function doSearch(){
     results.innerHTML = "";
     return;
   }
-  status.innerHTML = '<div class="skel"></div><div class="skel"></div>';
-  results.innerHTML = "";
-  (async function(){
-    try{
-      await ensureChunksForQuery(q);
-    }catch(e){ console.warn(e); }
-    const pool = allSearchable();
+  // 1) Instant search on core + already loaded extras (never block UI)
+  function renderHits(pool){
     const hits = [];
-    for(const m of pool){
+    for(let i=0;i<pool.length;i++){
+      const m = pool[i];
       const n = m.n.toLowerCase();
       if(n.includes(q)){
         let sc = n.startsWith(q)?100:(n.includes(" "+q)?80:50-Math.min(n.indexOf(q),40));
         sc -= Math.min(n.length/20,8);
-        hits.push({m,sc});
+        hits.push({m:m, sc:sc});
       }
     }
-    hits.sort((a,b)=>b.sc-a.sc);
+    hits.sort(function(a,b){ return b.sc-a.sc; });
     const top = hits.slice(0, q.length===1 ? 40 : 25);
     if(!top.length){
       status.textContent = t("noRes",{q:qRaw});
-      return;
+      results.innerHTML = "";
+      return 0;
     }
-    const cnt = totalKnownCount();
-    status.textContent = t("results",{n:top.length+(hits.length>top.length?"+":"")});
-    results.innerHTML = top.map(h=>renderCard(h.m)).join("");
-    addRecentQuery(qRaw.trim());
+    status.textContent = t("results",{n: top.length+(hits.length>top.length?"+":"")});
+    results.innerHTML = top.map(function(h){ return renderCard(h.m); }).join("");
+    try{ addRecentQuery(qRaw.trim()); }catch(e){}
+    return top.length;
+  }
+  const instant = renderHits(allSearchable());
+  if(!instant){
+    status.innerHTML = '<div class="skel"></div>';
+  }
+  // 2) Load more chunks in background, then refresh results
+  (async function(){
+    try{
+      await Promise.race([
+        ensureChunksForQuery(q),
+        new Promise(function(res){ setTimeout(res, 7000); })
+      ]);
+    }catch(e){ console.warn(e); }
+    // only refresh if same query still in box
+    const still = (document.getElementById("q").value||"").toLowerCase().replace(/\s+/g," ").trim();
+    if(still === q) renderHits(allSearchable());
   })();
 }
 
