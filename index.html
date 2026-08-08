@@ -589,6 +589,8 @@ body{
 .int-msg{font-size:.8rem;line-height:1.45;color:var(--muted)}
 .int-section{margin:14px 0 8px}
 
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-d,#0f766e));color:#fff;border:none;border-radius:14px;padding:14px 18px;font-weight:700;font-size:.95rem;cursor:pointer;box-shadow:0 4px 14px rgba(13,148,136,.25)}
+.btn-primary:active{transform:scale(.98)}
 </style>
 </head>
 <body>
@@ -644,8 +646,42 @@ body{
 
   <!-- FAVORITES PAGE -->
   <div id="page-fav" class="page">
-    <div class="hdr"><h1>❤️ Favorites</h1></div>
+    <div class="hdr"><h1 id="shelfHdr">💊 My Shelf</h1></div>
+
+    <div class="card" style="margin-bottom:14px">
+      <div style="font-size:.8rem;color:var(--muted);margin-bottom:6px" id="shelfAddLbl">Add medicine to shelf</div>
+      <div class="search-wrap" style="margin-bottom:8px">
+        <input type="text" id="shelfQ" placeholder="Dolo 650, Crocin..." autocomplete="off" oninput="shelfSuggest()">
+      </div>
+      <div id="shelfSug" style="max-height:140px;overflow-y:auto;margin-bottom:8px"></div>
+
+      <div style="font-size:.8rem;color:var(--muted);margin-bottom:6px" id="shelfWhoLbl">Who takes this?</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+        <select id="shelfPerson" style="flex:1;min-width:120px;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:.95rem">
+          <option value="Self">Self</option>
+          <option value="Spouse">Spouse</option>
+          <option value="Child">Child</option>
+          <option value="Parent">Parent</option>
+          <option value="Other">Other</option>
+        </select>
+        <input type="text" id="shelfPersonCustom" placeholder="Name (if Other)" style="flex:1;min-width:100px;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:.95rem">
+      </div>
+      <button type="button" class="btn-primary" style="width:100%;margin-bottom:10px" onclick="shelfAddPicked()">+ Add to My Shelf</button>
+
+      <div style="border-top:1px dashed var(--border);padding-top:12px;margin-top:4px">
+        <div style="font-size:.8rem;color:var(--muted);margin-bottom:8px">Not in our list? Add your own</div>
+        <input type="text" id="customMedName" placeholder="Medicine name *" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);margin-bottom:8px;font-size:.95rem;box-sizing:border-box">
+        <input type="text" id="customMedComp" placeholder="Composition / salt (optional)" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);margin-bottom:8px;font-size:.95rem;box-sizing:border-box">
+        <input type="text" id="customMedNote" placeholder="Note — dose, doctor name… (optional)" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);margin-bottom:10px;font-size:.95rem;box-sizing:border-box">
+        <button type="button" style="width:100%;padding:12px;border-radius:14px;border:1px solid var(--primary);background:transparent;color:var(--primary-d);font-weight:700;font-size:.9rem;cursor:pointer" onclick="shelfAddCustom()">+ Add custom medicine</button>
+      </div>
+    </div>
+
+    <div style="font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:4px 0 8px">On my shelf</div>
     <div id="favList"></div>
+
+    <div style="font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:18px 0 8px">⏰ Reminders</div>
+    <div id="shelfRemList"></div>
   </div>
 
   <!-- RECENT PAGE -->
@@ -791,7 +827,7 @@ body{
   <button data-page="compare" onclick="navTo('compare')"><span>⚖️</span>Compare</button>
   <button data-page="calc" onclick="navTo('calc')"><span>🧮</span>Health</button>
   <button data-page="remind" onclick="navTo('remind')"><span>⏰</span>Remind</button>
-  <button data-page="fav" onclick="navTo('fav')"><span>❤️</span>Fav</button>
+  <button data-page="fav" onclick="navTo('fav')"><span>💊</span>Shelf</button>
 </nav>
 
 <script>
@@ -936,7 +972,10 @@ async function ensureChunksForQuery(q){
 }
 
 function allSearchable(){
-  return extraMeds.length ? M.concat(extraMeds) : M;
+  let list = M;
+  if(extraMeds && extraMeds.length) list = list.concat(extraMeds);
+  if(typeof customMeds !== "undefined" && customMeds.length) list = list.concat(customMeds);
+  return list;
 }
 function totalKnownCount(){
   const metaTotal = (META && META.total) ? META.total : M.length;
@@ -5844,6 +5883,8 @@ try{ lang = localStorage.getItem("medLang") || "en"; }catch(e){}
 let theme = "light";
 try{ theme = localStorage.getItem("medTheme") || "light"; }catch(e){}
 let favs = safeGet("medFavs", []);
+let shelfMeta = safeGet("medShelfMeta", {}); // { name: person }
+
 let recent = safeGet("medRecent", []);
 let cmpSel = []; // up to 2 medicine names
 
@@ -7114,31 +7155,216 @@ function renderCompare(){
     </div>`;
 }
 
+
+let shelfPickName = "";
+
+function shelfAddCustom(){
+  const nameEl = document.getElementById("customMedName");
+  const compEl = document.getElementById("customMedComp");
+  const noteEl = document.getElementById("customMedNote");
+  const name = (nameEl && nameEl.value || "").trim();
+  if(!name){ alert("Enter medicine name"); return; }
+  // already exists?
+  if(allSearchable().some(m => (m.n||"").toLowerCase() === name.toLowerCase())){
+    // just add to shelf
+    shelfPickName = allSearchable().find(m => (m.n||"").toLowerCase() === name.toLowerCase()).n;
+    shelfAddPicked();
+    return;
+  }
+  const person = shelfPersonValue();
+  const med = {
+    n: name,
+    m: "Custom",
+    c: (compEl && compEl.value || "").trim() || "—",
+    p: "",
+    k: "",
+    u: (noteEl && noteEl.value || "").trim() || "User-added medicine",
+    s: "",
+    custom: true,
+    note: (noteEl && noteEl.value || "").trim()
+  };
+  customMeds.unshift(med);
+  safeSet("medCustom", customMeds);
+  if(!favs.includes(name)) favs.unshift(name);
+  shelfMeta[name] = person;
+  safeSet("medFavs", favs);
+  safeSet("medShelfMeta", shelfMeta);
+  if(nameEl) nameEl.value = "";
+  if(compEl) compEl.value = "";
+  if(noteEl) noteEl.value = "";
+  renderFavs();
+  if(confirm("Custom medicine added.\\n\\nSet a reminder?")){
+    remPickName = name;
+    const rq = document.getElementById("remQ");
+    if(rq) rq.value = name;
+    const rp = document.getElementById("remPick");
+    if(rp) rp.textContent = name + " · " + person;
+    window._remPersonPending = person;
+    navTo("remind");
+  }
+}
+function shelfEditCustom(name){
+  const med = customMeds.find(m => m.n === name);
+  if(!med){ alert("Only custom medicines can be edited"); return; }
+  const newName = prompt("Medicine name", med.n);
+  if(newName === null) return;
+  const newComp = prompt("Composition / salt", med.c || "");
+  if(newComp === null) return;
+  const newNote = prompt("Note", med.note || med.u || "");
+  if(newNote === null) return;
+  const newPerson = prompt("Who takes this?", shelfMeta[name] || "Self");
+  if(newPerson === null) return;
+  const nn = newName.trim();
+  if(!nn){ alert("Name required"); return; }
+  // update favs key if renamed
+  favs = favs.map(n => n === name ? nn : n);
+  if(shelfMeta[name] !== undefined){
+    delete shelfMeta[name];
+  }
+  shelfMeta[nn] = (newPerson || "Self").trim();
+  med.n = nn;
+  med.c = (newComp || "").trim() || "—";
+  med.note = (newNote || "").trim();
+  med.u = med.note || "User-added medicine";
+  // update reminders names
+  if(typeof reminders !== "undefined"){
+    reminders.forEach(r => { if(r.name === name) r.name = nn; });
+    safeSet("medReminders", reminders);
+  }
+  safeSet("medCustom", customMeds);
+  safeSet("medFavs", favs);
+  safeSet("medShelfMeta", shelfMeta);
+  renderFavs();
+  try{ renderReminders(); }catch(e){}
+}
+function shelfDeleteCustom(name){
+  if(!confirm("Remove this custom medicine completely?")) return;
+  customMeds = customMeds.filter(m => m.n !== name);
+  favs = favs.filter(n => n !== name);
+  try{ delete shelfMeta[name]; }catch(e){}
+  safeSet("medCustom", customMeds);
+  safeSet("medFavs", favs);
+  safeSet("medShelfMeta", shelfMeta);
+  renderFavs();
+}
+
+function shelfSuggest(){
+  const q = (document.getElementById("shelfQ").value || "").trim().toLowerCase();
+  const box = document.getElementById("shelfSug");
+  if(!box) return;
+  if(q.length < 1){ box.innerHTML = ""; return; }
+  const hits = allSearchable().filter(m => (m.n||"").toLowerCase().includes(q) || (m.c||"").toLowerCase().includes(q)).slice(0, 12);
+  box.innerHTML = hits.map(m => `<div class="card" style="padding:10px;margin-bottom:6px;cursor:pointer" onclick="shelfPick('${escAttr(m.n)}')">
+    <strong>${esc(m.n)}</strong>
+    <div style="font-size:.75rem;color:var(--muted)">${esc(m.c||"")}</div>
+  </div>`).join("") || '<div style="font-size:.85rem;color:var(--muted);padding:8px">No match</div>';
+}
+function shelfPick(name){
+  shelfPickName = name;
+  const q = document.getElementById("shelfQ");
+  if(q) q.value = name;
+  const box = document.getElementById("shelfSug");
+  if(box) box.innerHTML = "";
+}
+function shelfPersonValue(){
+  const sel = document.getElementById("shelfPerson");
+  const custom = document.getElementById("shelfPersonCustom");
+  let p = sel ? sel.value : "Self";
+  if(p === "Other" && custom && custom.value.trim()) p = custom.value.trim();
+  return p || "Self";
+}
+function shelfAddPicked(){
+  const name = shelfPickName || (document.getElementById("shelfQ") && document.getElementById("shelfQ").value.trim());
+  if(!name){ alert("Pick a medicine"); return; }
+  const med = allSearchable().find(m => m.n === name);
+  if(!med){ alert("Medicine not found in list"); return; }
+  if(!favs.includes(name)) favs.unshift(name);
+  shelfMeta[name] = shelfPersonValue();
+  safeSet("medFavs", favs);
+  safeSet("medShelfMeta", shelfMeta);
+  shelfPickName = "";
+  if(document.getElementById("shelfQ")) document.getElementById("shelfQ").value = "";
+  renderFavs();
+  // Ask to set reminder
+  if(confirm("Added to My Shelf.\\n\\nSet a reminder for this medicine?")){
+    remPickName = name;
+    const rq = document.getElementById("remQ");
+    if(rq) rq.value = name;
+    const rp = document.getElementById("remPick");
+    if(rp) rp.textContent = name + " · " + (shelfMeta[name]||"Self");
+    // store person for next save
+    window._remPersonPending = shelfMeta[name] || "Self";
+    navTo("remind");
+  }
+}
+function shelfSetReminder(name){
+  remPickName = name;
+  const rq = document.getElementById("remQ");
+  if(rq) rq.value = name;
+  const rp = document.getElementById("remPick");
+  if(rp) rp.textContent = name + " · " + (shelfMeta[name]||"Self");
+  window._remPersonPending = shelfMeta[name] || "Self";
+  navTo("remind");
+}
+function shelfRemove(name){
+  favs = favs.filter(n => n !== name);
+  try{ delete shelfMeta[name]; }catch(e){}
+  safeSet("medFavs", favs);
+  safeSet("medShelfMeta", shelfMeta);
+  renderFavs();
+}
+
 function renderFavs(){
   const el = document.getElementById("favList");
   if(!el) return;
-  if(!favs.length){ el.innerHTML='<div class="empty"><span>❤️</span>'+t("emptyFav")+'</div>'; }
-  else {
+  if(!favs.length){
+    el.innerHTML='<div class="empty"><span>💊</span>No medicines on shelf yet.<br><span style="font-size:.85rem">Search above and tap Add</span></div>';
+  } else {
     el.innerHTML = favs.map(n=>{
       const m = allSearchable().find(x=>x.n===n);
-      return m?renderCard(m):"";
+      const person = (shelfMeta && shelfMeta[n]) ? shelfMeta[n] : "Self";
+      const title = m ? m.n : n;
+      const sub = m ? (m.c || "") : "";
+      const price = m && m.p ? ("₹" + m.p) : "";
+      return `<div class="card" style="margin-bottom:10px">
+        <div style="cursor:pointer" onclick="openDetail('${escAttr(title)}')">
+          <div style="font-weight:700;font-size:1rem">${esc(title)}</div>
+          <div style="font-size:.78rem;color:var(--muted);margin-top:3px">${esc(sub)}</div>
+          <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+            <span class="badge" style="background:var(--primary);color:#fff">👤 ${esc(person)}</span>
+            ${(m && m.custom) ? `<span class="badge">Custom</span>` : ""}
+            ${price?`<span class="badge">${esc(price)}</span>`:""}
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+          <button type="button" class="btn-primary" style="flex:1;min-width:100px;padding:10px;font-size:.85rem" onclick="event.stopPropagation();shelfSetReminder('${escAttr(title)}')">⏰ Reminder</button>
+          ${(m && m.custom) ? `<button type="button" style="padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:.85rem" onclick="event.stopPropagation();shelfEditCustom('${escAttr(title)}')">Edit</button>` : ""}
+          <button type="button" style="padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:.85rem" onclick="event.stopPropagation();shelfRemove('${escAttr(title)}')">Remove</button>
+        </div>
+      </div>`;
     }).join("");
   }
-  // Shelf reminders section
   const sr = document.getElementById("shelfRemList");
   if(sr){
     try{
       if(typeof reminders!=="undefined" && reminders.length){
-        sr.innerHTML = reminders.map(r=>`<div class="card" style="margin-bottom:8px;cursor:pointer" onclick="openDetail('${escAttr(r.name||"")}')">
-          <strong>${esc(r.name||"")}</strong>
-          <div style="font-size:.8rem;color:var(--muted);margin-top:4px">${esc(r.freq||"")} · ${esc(r.time||"")}</div>
-        </div>`).join("");
+        sr.innerHTML = reminders.map(r=>{
+          const times = (r.times && r.times.join) ? r.times.join(", ") : (r.time||"");
+          const person = r.person || (shelfMeta && shelfMeta[r.name]) || "Self";
+          return `<div class="card" style="margin-bottom:8px">
+            <div style="cursor:pointer" onclick="openDetail('${escAttr(r.name||"")}')">
+              <strong>${esc(r.name||"")}</strong>
+              <div style="font-size:.8rem;color:var(--muted);margin-top:4px">👤 ${esc(person)} · ${esc(r.freq||"")} · ${esc(times)}</div>
+            </div>
+            <button type="button" style="margin-top:8px;font-size:.78rem;padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--danger,#b91c1c)" onclick="deleteReminder('${escAttr(r.id||"")}')">Delete reminder</button>
+          </div>`;
+        }).join("");
       } else {
-        sr.innerHTML = '<div class="empty" style="padding:12px"><span>⏰</span>'+t("remNone")+'</div>';
+        sr.innerHTML = '<div class="empty" style="padding:12px"><span>⏰</span>No reminders yet. Add a medicine, then tap Reminder.</div>';
       }
     }catch(e){ sr.innerHTML = ""; }
   }
-  fillIxList();
+  try{ fillIxList(); }catch(e){}
   const h = document.getElementById("shelfHdr");
   if(h) h.textContent = "💊 My Shelf";
 }
@@ -7376,20 +7602,26 @@ function saveReminder(){
   const note = document.getElementById("remNote").value.trim();
   const food = document.getElementById("remFood").value;
   const foodMin = parseInt(document.getElementById("remFoodMin").value,10)||15;
+  const person = window._remPersonPending || (shelfMeta && shelfMeta[name]) || "Self";
+  window._remPersonPending = null;
   const item = {
     id: Date.now().toString(36),
-    name, freq, times, note, food, foodMin,
+    name, person, freq, times, note, food, foodMin,
     weekday: parseInt(document.getElementById("remWeekday").value,10),
     monthDay: parseInt(document.getElementById("remMonthDay").value,10)||1,
     created: Date.now(),
     lastFired: {}
   };
+  // also keep on shelf
+  if(!favs.includes(name)) { favs.unshift(name); safeSet("medFavs", favs); }
+  if(!shelfMeta[name]) { shelfMeta[name] = person; safeSet("medShelfMeta", shelfMeta); }
   reminders.unshift(item);
   safeSet("medReminders", reminders);
   remPickName = "";
   document.getElementById("remPick").textContent = "";
   document.getElementById("remNote").value = "";
   renderReminders();
+  try{ renderFavs(); }catch(e){}
   tryRequestNotif();
   alert(t("remSaved"));
 }
