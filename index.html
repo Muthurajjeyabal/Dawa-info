@@ -666,21 +666,21 @@ body{
         </select>
         <input type="text" id="shelfPersonCustom" placeholder="Name (if Other)" style="flex:1;min-width:100px;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:.95rem">
       </div>
-      <button type="button" class="btn-primary" style="width:100%;margin-bottom:10px" onclick="shelfAddPicked()">+ Add to My Shelf</button>
+      <button type="button" class="btn-primary" style="width:100%;margin-bottom:10px" onclick="shelfAddPicked()" data-i18n="shelfAddBtn">+ Add to My Shelf</button>
 
       <div style="border-top:1px dashed var(--border);padding-top:12px;margin-top:4px">
-        <div style="font-size:.8rem;color:var(--muted);margin-bottom:8px">Not in our list? Add your own</div>
-        <input type="text" id="customMedName" placeholder="Medicine name *" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);margin-bottom:8px;font-size:.95rem;box-sizing:border-box">
-        <input type="text" id="customMedComp" placeholder="Composition / salt (optional)" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);margin-bottom:8px;font-size:.95rem;box-sizing:border-box">
-        <input type="text" id="customMedNote" placeholder="Note — dose, doctor name… (optional)" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);margin-bottom:10px;font-size:.95rem;box-sizing:border-box">
-        <button type="button" style="width:100%;padding:12px;border-radius:14px;border:1px solid var(--primary);background:transparent;color:var(--primary-d);font-weight:700;font-size:.9rem;cursor:pointer" onclick="shelfAddCustom()">+ Add custom medicine</button>
+        <div style="font-size:.8rem;color:var(--muted);margin-bottom:8px" data-i18n="shelfCustomTitle">Not in our list? Add your own</div>
+        <input type="text" id="customMedName" data-i18n-placeholder="shelfCustomName" placeholder="Medicine name *" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);margin-bottom:8px;font-size:.95rem;box-sizing:border-box">
+        <input type="text" id="customMedComp" data-i18n-placeholder="shelfCustomComp" placeholder="Composition / salt (optional)" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);margin-bottom:8px;font-size:.95rem;box-sizing:border-box">
+        <input type="text" id="customMedNote" data-i18n-placeholder="shelfCustomNote" placeholder="Note — dose, doctor name… (optional)" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);margin-bottom:10px;font-size:.95rem;box-sizing:border-box">
+        <button type="button" style="width:100%;padding:12px;border-radius:14px;border:1px solid var(--primary);background:transparent;color:var(--primary-d);font-weight:700;font-size:.9rem;cursor:pointer" onclick="shelfAddCustom()" data-i18n="shelfCustomBtn">+ Add custom medicine</button>
       </div>
     </div>
 
-    <div style="font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:4px 0 8px">On my shelf</div>
+    <div style="font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:4px 0 8px" data-i18n="shelfOnList">On my shelf</div>
     <div id="favList"></div>
 
-    <div style="font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:18px 0 8px">⏰ Reminders</div>
+    <div style="font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:18px 0 8px">⏰ <span data-i18n="shelfRemSection">Reminders</span></div>
     <div id="shelfRemList"></div>
   </div>
 
@@ -1559,6 +1559,44 @@ function riskClass(l){
 /* Localized medical text: ta / hi overlays */
 const ING_L10N = {
   ta: {
+    shelf:"ஷெல்ஃப்",
+    shelfTitle:"என் ஷெல்ஃப்",
+    shelfAddLbl:"ஷெல்ஃப்பில் மருந்து சேர்",
+    shelfWho:"யார் எடுக்கிறார்கள்?",
+    shelfAddBtn:"+ என் ஷெல்ஃப்பில் சேர்",
+    shelfCustomTitle:"நம் பட்டியலில் இல்லையா? நீங்களே சேருங்கள்",
+    shelfCustomName:"மருந்து பெயர் *",
+    shelfCustomComp:"கலவை / உப்பு (விருப்பம்)",
+    shelfCustomNote:"குறிப்பு — அளவு, மருத்துவர்… (விருப்பம்)",
+    shelfCustomBtn:"+ சொந்த மருந்து சேர்",
+    shelfOnList:"என் ஷெல்ஃப்பில்",
+    shelfRemSection:"நினைவூட்டல்கள்",
+    shelfEmpty:"இன்னும் மருந்து இல்லை. மேலே தேடி Add அழுத்துங்கள்",
+    shelfNoRem:"நினைவூட்டல் இல்லை. மருந்து சேர்த்து Reminder அழுத்துங்கள்",
+    shelfPick:"மருந்தைத் தேர்ந்தெடுக்கவும்",
+    shelfNotFound:"பட்டியலில் மருந்து இல்லை",
+    shelfAddedRem:"ஷெல்ஃப்பில் சேர்க்கப்பட்டது.\n\nநினைவூட்டல் அமைக்கவா?",
+    shelfCustomAdded:"சொந்த மருந்து சேர்க்கப்பட்டது.\n\nநினைவூட்டல் அமைக்கவா?",
+    shelfNeedName:"மருந்து பெயரை உள்ளிடவும்",
+    shelfOnlyCustom:"சொந்த மருந்துகளை மட்டும் திருத்தலாம்",
+    shelfEditName:"மருந்து பெயர்",
+    shelfEditComp:"கலவை / உப்பு",
+    shelfEditNote:"குறிப்பு",
+    shelfEditWho:"யார் எடுக்கிறார்கள்?",
+    shelfNameReq:"பெயர் தேவை",
+    shelfDelCustom:"இந்த சொந்த மருந்தை முழுவதும் நீக்கவா?",
+    shelfPersonSelf:"நான்",
+    shelfPersonSpouse:"கணவர்/மனைவி",
+    shelfPersonChild:"குழந்தை",
+    shelfPersonParent:"பெற்றோர்",
+    shelfPersonOther:"மற்றவர்",
+    shelfPersonCustomPh:"பெயர் (மற்றவர் என்றால்)",
+    shelfRemBtn:"நினைவூட்டல்",
+    shelfRemove:"நீக்கு",
+    shelfEdit:"திருத்து",
+    shelfCustomBadge:"சொந்தம்",
+    shelfDelRem:"நினைவூட்டல் நீக்கு",
+    shelfSearchPh:"டோலோ 650, க்ரோசின்...",
     "paracetamol": {
       uses: "காய்ச்சல், லேசான-நடுத்தர வலி",
       dosage: "பெரியவர்கள்: 500–1000 மி.கி. 4–6 மணிக்கு. நாள் max 4g.",
@@ -2037,6 +2075,44 @@ const ING_L10N = {
     },
   },
   hi: {
+    shelf:"शेल्फ",
+    shelfTitle:"मेरी शेल्फ",
+    shelfAddLbl:"शेल्फ में दवा जोड़ें",
+    shelfWho:"कौन लेता/लेती है?",
+    shelfAddBtn:"+ मेरी शेल्फ में जोड़ें",
+    shelfCustomTitle:"हमारी सूची में नहीं? खुद जोड़ें",
+    shelfCustomName:"दवा का नाम *",
+    shelfCustomComp:"संरचना / सॉल्ट (वैकल्पिक)",
+    shelfCustomNote:"नोट — खुराक, डॉक्टर… (वैकल्पिक)",
+    shelfCustomBtn:"+ अपनी दवा जोड़ें",
+    shelfOnList:"मेरी शेल्फ पर",
+    shelfRemSection:"रिमाइंडर",
+    shelfEmpty:"अभी कोई दवा नहीं। ऊपर खोजकर Add दबाएँ",
+    shelfNoRem:"कोई रिमाइंडर नहीं। दवा जोड़कर Reminder दबाएँ",
+    shelfPick:"दवा चुनें",
+    shelfNotFound:"सूची में दवा नहीं मिली",
+    shelfAddedRem:"शेल्फ में जोड़ दी गई।\n\nरिमाइंडर सेट करें?",
+    shelfCustomAdded:"कस्टम दवा जुड़ गई।\n\nरिमाइंडर सेट करें?",
+    shelfNeedName:"दवा का नाम लिखें",
+    shelfOnlyCustom:"केवल कस्टम दवाएँ संपादित हो सकती हैं",
+    shelfEditName:"दवा का नाम",
+    shelfEditComp:"संरचना / सॉल्ट",
+    shelfEditNote:"नोट",
+    shelfEditWho:"कौन लेता/लेती है?",
+    shelfNameReq:"नाम ज़रूरी है",
+    shelfDelCustom:"यह कस्टम दवा पूरी तरह हटाएँ?",
+    shelfPersonSelf:"स्वयं",
+    shelfPersonSpouse:"पति/पत्नी",
+    shelfPersonChild:"बच्चा",
+    shelfPersonParent:"माता-पिता",
+    shelfPersonOther:"अन्य",
+    shelfPersonCustomPh:"नाम (यदि अन्य)",
+    shelfRemBtn:"रिमाइंडर",
+    shelfRemove:"हटाएँ",
+    shelfEdit:"संपादित",
+    shelfCustomBadge:"कस्टम",
+    shelfDelRem:"रिमाइंडर हटाएँ",
+    shelfSearchPh:"डोलो 650, क्रोसिन...",
     "paracetamol": {
       uses: "बुखार, हल्का-मध्यम दर्द",
       dosage: "वयस्क: 500–1000 मिग्रा हर 4–6 घंटे। दिन में अधिकतम 4 ग्राम।",
@@ -2515,6 +2591,44 @@ const ING_L10N = {
     },
   },
   kn: {
+    shelf:"ಶೆಲ್ಫ್",
+    shelfTitle:"ನನ್ನ ಶೆಲ್ಫ್",
+    shelfAddLbl:"ಶೆಲ್ಫ್‌ಗೆ ಔಷಧ ಸೇರಿಸಿ",
+    shelfWho:"ಯಾರು ತೆಗೆದುಕೊಳ್ಳುತ್ತಾರೆ?",
+    shelfAddBtn:"+ ನನ್ನ ಶೆಲ್ಫ್‌ಗೆ ಸೇರಿಸಿ",
+    shelfCustomTitle:"ನಮ್ಮ ಪಟ್ಟಿಯಲ್ಲಿ ಇಲ್ಲವೇ? ನೀವೇ ಸೇರಿಸಿ",
+    shelfCustomName:"ಔಷಧದ ಹೆಸರು *",
+    shelfCustomComp:"ಸಂಯೋಜನೆ (ಐಚ್ಛಿಕ)",
+    shelfCustomNote:"ನೋಟ್ (ಐಚ್ಛಿಕ)",
+    shelfCustomBtn:"+ ಕಸ್ಟಮ್ ಔಷಧ",
+    shelfOnList:"ನನ್ನ ಶೆಲ್ಫ್‌ನಲ್ಲಿ",
+    shelfRemSection:"ಜ್ಞಾಪನೆಗಳು",
+    shelfEmpty:"ಇನ್ನೂ ಔಷಧಗಳಿಲ್ಲ",
+    shelfNoRem:"ಜ್ಞಾಪನೆಗಳಿಲ್ಲ",
+    shelfPick:"ಔಷಧ ಆಯ್ಕೆಮಾಡಿ",
+    shelfNotFound:"ಪಟ್ಟಿಯಲ್ಲಿ ಇಲ್ಲ",
+    shelfAddedRem:"ಸೇರಿಸಲಾಗಿದೆ.\n\nಜ್ಞಾಪನೆ?",
+    shelfCustomAdded:"ಕಸ್ಟಮ್ ಸೇರಿಸಲಾಗಿದೆ.\n\nಜ್ಞಾಪನೆ?",
+    shelfNeedName:"ಹೆಸರು ನಮೂದಿಸಿ",
+    shelfOnlyCustom:"ಕಸ್ಟಮ್ ಮಾತ್ರ ಎಡಿಟ್",
+    shelfEditName:"ಹೆಸರು",
+    shelfEditComp:"ಸಂಯೋಜನೆ",
+    shelfEditNote:"ನೋಟ್",
+    shelfEditWho:"ಯಾರು?",
+    shelfNameReq:"ಹೆಸರು ಅಗತ್ಯ",
+    shelfDelCustom:"ಅಳಿಸಬೇಕೇ?",
+    shelfPersonSelf:"ನಾನು",
+    shelfPersonSpouse:"ಸಂಗಾತಿ",
+    shelfPersonChild:"ಮಗು",
+    shelfPersonParent:"ಪೋಷಕರು",
+    shelfPersonOther:"ಇತರರು",
+    shelfPersonCustomPh:"ಹೆಸರು",
+    shelfRemBtn:"ಜ್ಞಾಪನೆ",
+    shelfRemove:"ತೆಗೆದುಹಾಕಿ",
+    shelfEdit:"ಎಡಿಟ್",
+    shelfCustomBadge:"ಕಸ್ಟಮ್",
+    shelfDelRem:"ಜ್ಞಾಪನೆ ಅಳಿಸಿ",
+    shelfSearchPh:"ಡೋಲೋ 650...",
     "paracetamol": {
       uses: "ಜ್ವರ, ಸೌಮ್ಯ-ಮಧ್ಯಮ ನೋವು",
       dosage: "ವಯಸ್ಕರು: 500–1000 ಮಿಗ್ರಾ ಪ್ರತಿ 4–6 ಗಂಟೆ. ದಿನಕ್ಕೆ max 4g.",
@@ -2993,6 +3107,44 @@ const ING_L10N = {
     },
   },
   te: {
+    shelf:"షెల్ఫ్",
+    shelfTitle:"నా షెల్ఫ్",
+    shelfAddLbl:"షెల్ఫ్‌కు మందు జోడించండి",
+    shelfWho:"ఎవరు తీసుకుంటారు?",
+    shelfAddBtn:"+ నా షెల్ఫ్‌కు జోడించు",
+    shelfCustomTitle:"మా జాబితాలో లేదా? మీరే జోడించండి",
+    shelfCustomName:"మందు పేరు *",
+    shelfCustomComp:"కూర్పు / సాల్ట్ (ఐచ్ఛికం)",
+    shelfCustomNote:"నోట్ (ఐచ్ఛికం)",
+    shelfCustomBtn:"+ కస్టమ్ మందు జోడించు",
+    shelfOnList:"నా షెల్ఫ్‌లో",
+    shelfRemSection:"రిమైండర్లు",
+    shelfEmpty:"ఇంకా మందులు లేవు",
+    shelfNoRem:"రిమైండర్లు లేవు",
+    shelfPick:"మందు ఎంచుకోండి",
+    shelfNotFound:"జాబితాలో లేదు",
+    shelfAddedRem:"జోడించబడింది.\n\nరిమైండర్ సెట్ చేయాలా?",
+    shelfCustomAdded:"కస్టమ్ మందు జోడించబడింది.\n\nరిమైండర్?",
+    shelfNeedName:"పేరు ఇవ్వండి",
+    shelfOnlyCustom:"కస్టమ్ మందులు మాత్రమే ఎడిట్",
+    shelfEditName:"మందు పేరు",
+    shelfEditComp:"కూర్పు",
+    shelfEditNote:"నోట్",
+    shelfEditWho:"ఎవరు?",
+    shelfNameReq:"పేరు అవసరం",
+    shelfDelCustom:"కస్టమ్ మందు తొలగించాలా?",
+    shelfPersonSelf:"నేను",
+    shelfPersonSpouse:"భార్య/భర్త",
+    shelfPersonChild:"పిల్లవాడు",
+    shelfPersonParent:"తల్లిదండ్రులు",
+    shelfPersonOther:"ఇతరులు",
+    shelfPersonCustomPh:"పేరు (ఇతరులు)",
+    shelfRemBtn:"రిమైండర్",
+    shelfRemove:"తొలగించు",
+    shelfEdit:"ఎడిట్",
+    shelfCustomBadge:"కస్టమ్",
+    shelfDelRem:"రిమైండర్ తొలగించు",
+    shelfSearchPh:"డోలో 650...",
     "paracetamol": {
       uses: "జ్వరం, తేలికైన-మధ్యస్థ నొప్పి",
       dosage: "పెద్దలు: 500–1000 మి.గ్రా ప్రతి 4–6 గంటలు. రోజుకు max 4g.",
@@ -3471,6 +3623,44 @@ const ING_L10N = {
     },
   },
   ml: {
+    shelf:"ഷെൽഫ്",
+    shelfTitle:"എന്റെ ഷെൽഫ്",
+    shelfAddLbl:"ഷെൽഫിൽ മരുന്ന് ചേർക്കുക",
+    shelfWho:"ആരാണ് കഴിക്കുന്നത്?",
+    shelfAddBtn:"+ എന്റെ ഷെൽഫിൽ ചേർക്കുക",
+    shelfCustomTitle:"ലിസ്റ്റിലില്ലേ? സ്വയം ചേർക്കുക",
+    shelfCustomName:"മരുന്നിന്റെ പേര് *",
+    shelfCustomComp:"ഘടന (ഓപ്ഷണൽ)",
+    shelfCustomNote:"നോട്ട് (ഓപ്ഷണൽ)",
+    shelfCustomBtn:"+ കസ്റ്റം മരുന്ന്",
+    shelfOnList:"എന്റെ ഷെൽഫിൽ",
+    shelfRemSection:"റിമൈൻഡറുകൾ",
+    shelfEmpty:"മരുന്നുകളില്ല",
+    shelfNoRem:"റിമൈൻഡറില്ല",
+    shelfPick:"മരുന്ന് തിരഞ്ഞെടുക്കുക",
+    shelfNotFound:"ലഭ്യമല്ല",
+    shelfAddedRem:"ചേർത്തു.\n\nറിമൈൻഡർ?",
+    shelfCustomAdded:"കസ്റ്റം ചേർത്തു.\n\nറിമൈൻഡർ?",
+    shelfNeedName:"പേര് നൽകുക",
+    shelfOnlyCustom:"കസ്റ്റം മാത്രം എഡിറ്റ്",
+    shelfEditName:"പേര്",
+    shelfEditComp:"ഘടന",
+    shelfEditNote:"നോട്ട്",
+    shelfEditWho:"ആര്?",
+    shelfNameReq:"പേര് ആവശ്യം",
+    shelfDelCustom:"നീക്കം ചെയ്യണോ?",
+    shelfPersonSelf:"ഞാൻ",
+    shelfPersonSpouse:"ഭാര്യ/ഭർത്താവ്",
+    shelfPersonChild:"കുട്ടി",
+    shelfPersonParent:"മാതാപിതാക്കൾ",
+    shelfPersonOther:"മറ്റുള്ളവർ",
+    shelfPersonCustomPh:"പേര്",
+    shelfRemBtn:"റിമൈൻഡർ",
+    shelfRemove:"നീക്കം",
+    shelfEdit:"എഡിറ്റ്",
+    shelfCustomBadge:"കസ്റ്റം",
+    shelfDelRem:"റിമൈൻഡർ നീക്കം",
+    shelfSearchPh:"ഡോളോ 650...",
     "paracetamol": {
       uses: "പനി, ലഘു-മിതമായ വേദന",
       dosage: "മുതിർന്നവർ: 500–1000 മി.ഗ്രാം ഓരോ 4–6 മണിക്കൂറിലും. ദിവസം max 4g.",
@@ -3949,6 +4139,44 @@ const ING_L10N = {
     },
   },
   bn: {
+    shelf:"শেল্ফ",
+    shelfTitle:"আমার শেল্ফ",
+    shelfAddLbl:"शेल्फ में दवा जोड़ें",
+    shelfWho:"কে খায়?",
+    shelfAddBtn:"+ শেল্ফে যোগ",
+    shelfCustomTitle:"हमारी सूची में नहीं? खुद जोड़ें",
+    shelfCustomName:"दवा का नाम *",
+    shelfCustomComp:"संरचना / सॉल्ट (वैकल्पिक)",
+    shelfCustomNote:"नोट — खुराक, डॉक्टर… (वैकल्पिक)",
+    shelfCustomBtn:"+ কাস্টম ওষুধ",
+    shelfOnList:"मेरी शेल्फ पर",
+    shelfRemSection:"रिमाइंडर",
+    shelfEmpty:"अभी कोई दवा नहीं। ऊपर खोजकर Add दबाएँ",
+    shelfNoRem:"कोई रिमाइंडर नहीं। दवा जोड़कर Reminder दबाएँ",
+    shelfPick:"दवा चुनें",
+    shelfNotFound:"सूची में दवा नहीं मिली",
+    shelfAddedRem:"शेल्फ में जोड़ दी गई।\n\nरिमाइंडर सेट करें?",
+    shelfCustomAdded:"कस्टम दवा जुड़ गई।\n\nरिमाइंडर सेट करें?",
+    shelfNeedName:"दवा का नाम लिखें",
+    shelfOnlyCustom:"केवल कस्टम दवाएँ संपादित हो सकती हैं",
+    shelfEditName:"दवा का नाम",
+    shelfEditComp:"संरचना / सॉल्ट",
+    shelfEditNote:"नोट",
+    shelfEditWho:"कौन लेता/लेती है?",
+    shelfNameReq:"नाम ज़रूरी है",
+    shelfDelCustom:"यह कस्टम दवा पूरी तरह हटाएँ?",
+    shelfPersonSelf:"নিজে",
+    shelfPersonSpouse:"पति/पत्नी",
+    shelfPersonChild:"बच्चा",
+    shelfPersonParent:"माता-पिता",
+    shelfPersonOther:"अन्य",
+    shelfPersonCustomPh:"नाम (यदि अन्य)",
+    shelfRemBtn:"রিমাইন্ডার",
+    shelfRemove:"মুছুন",
+    shelfEdit:"সম্পাদনা",
+    shelfCustomBadge:"कस्टम",
+    shelfDelRem:"रिमाइंडर हटाएँ",
+    shelfSearchPh:"डोलो 650, क्रोसिन...",
     "paracetamol": {
       uses: "জ্বর, হালকা-মাঝারি ব্যথা",
       dosage: "প্রাপ্তবয়স্ক: ৫০০–১০০০ মিগ্রা প্রতি ৪–৬ ঘণ্টা। দিনে সর্বোচ্চ ৪ গ্রাম।",
@@ -4427,6 +4655,44 @@ const ING_L10N = {
     },
   },
   mr: {
+    shelf:"शेल्फ",
+    shelfTitle:"माझे शेल्फ",
+    shelfAddLbl:"शेल्फ में दवा जोड़ें",
+    shelfWho:"कोण घेतो?",
+    shelfAddBtn:"+ शेल्फमध्ये जोडा",
+    shelfCustomTitle:"हमारी सूची में नहीं? खुद जोड़ें",
+    shelfCustomName:"दवा का नाम *",
+    shelfCustomComp:"संरचना / सॉल्ट (वैकल्पिक)",
+    shelfCustomNote:"नोट — खुराक, डॉक्टर… (वैकल्पिक)",
+    shelfCustomBtn:"+ कस्टम औषध",
+    shelfOnList:"मेरी शेल्फ पर",
+    shelfRemSection:"रिमाइंडर",
+    shelfEmpty:"अभी कोई दवा नहीं। ऊपर खोजकर Add दबाएँ",
+    shelfNoRem:"कोई रिमाइंडर नहीं। दवा जोड़कर Reminder दबाएँ",
+    shelfPick:"दवा चुनें",
+    shelfNotFound:"सूची में दवा नहीं मिली",
+    shelfAddedRem:"शेल्फ में जोड़ दी गई।\n\nरिमाइंडर सेट करें?",
+    shelfCustomAdded:"कस्टम दवा जुड़ गई।\n\nरिमाइंडर सेट करें?",
+    shelfNeedName:"दवा का नाम लिखें",
+    shelfOnlyCustom:"केवल कस्टम दवाएँ संपादित हो सकती हैं",
+    shelfEditName:"दवा का नाम",
+    shelfEditComp:"संरचना / सॉल्ट",
+    shelfEditNote:"नोट",
+    shelfEditWho:"कौन लेता/लेती है?",
+    shelfNameReq:"नाम ज़रूरी है",
+    shelfDelCustom:"यह कस्टम दवा पूरी तरह हटाएँ?",
+    shelfPersonSelf:"मी",
+    shelfPersonSpouse:"पति/पत्नी",
+    shelfPersonChild:"बच्चा",
+    shelfPersonParent:"माता-पिता",
+    shelfPersonOther:"अन्य",
+    shelfPersonCustomPh:"नाम (यदि अन्य)",
+    shelfRemBtn:"रिमाइंडर",
+    shelfRemove:"काढा",
+    shelfEdit:"संपादन",
+    shelfCustomBadge:"कस्टम",
+    shelfDelRem:"रिमाइंडर हटाएँ",
+    shelfSearchPh:"डोलो 650, क्रोसिन...",
     "paracetamol": {
       uses: "ताप, सौम्य-मध्यम वेदना",
       dosage: "प्रौढ: 500–1000 मिग्रा दर 4–6 तास. दिवसाला max 4g.",
@@ -4905,6 +5171,44 @@ const ING_L10N = {
     },
   },
   gu: {
+    shelf:"શેલ્ફ",
+    shelfTitle:"મારી શેલ્ફ",
+    shelfAddLbl:"शेल्फ में दवा जोड़ें",
+    shelfWho:"કોણ લે છે?",
+    shelfAddBtn:"+ શેલ્ફમાં ઉમેરો",
+    shelfCustomTitle:"हमारी सूची में नहीं? खुद जोड़ें",
+    shelfCustomName:"दवा का नाम *",
+    shelfCustomComp:"संरचना / सॉल्ट (वैकल्पिक)",
+    shelfCustomNote:"नोट — खुराक, डॉक्टर… (वैकल्पिक)",
+    shelfCustomBtn:"+ કસ્ટમ દવા",
+    shelfOnList:"मेरी शेल्फ पर",
+    shelfRemSection:"रिमाइंडर",
+    shelfEmpty:"अभी कोई दवा नहीं। ऊपर खोजकर Add दबाएँ",
+    shelfNoRem:"कोई रिमाइंडर नहीं। दवा जोड़कर Reminder दबाएँ",
+    shelfPick:"दवा चुनें",
+    shelfNotFound:"सूची में दवा नहीं मिली",
+    shelfAddedRem:"शेल्फ में जोड़ दी गई।\n\nरिमाइंडर सेट करें?",
+    shelfCustomAdded:"कस्टम दवा जुड़ गई।\n\nरिमाइंडर सेट करें?",
+    shelfNeedName:"दवा का नाम लिखें",
+    shelfOnlyCustom:"केवल कस्टम दवाएँ संपादित हो सकती हैं",
+    shelfEditName:"दवा का नाम",
+    shelfEditComp:"संरचना / सॉल्ट",
+    shelfEditNote:"नोट",
+    shelfEditWho:"कौन लेता/लेती है?",
+    shelfNameReq:"नाम ज़रूरी है",
+    shelfDelCustom:"यह कस्टम दवा पूरी तरह हटाएँ?",
+    shelfPersonSelf:"હું",
+    shelfPersonSpouse:"पति/पत्नी",
+    shelfPersonChild:"बच्चा",
+    shelfPersonParent:"माता-पिता",
+    shelfPersonOther:"अन्य",
+    shelfPersonCustomPh:"नाम (यदि अन्य)",
+    shelfRemBtn:"રિમાઇન્ડર",
+    shelfRemove:"કાઢો",
+    shelfEdit:"ફેરફાર",
+    shelfCustomBadge:"कस्टम",
+    shelfDelRem:"रिमाइंडर हटाएँ",
+    shelfSearchPh:"डोलो 650, क्रोसिन...",
     "paracetamol": {
       uses: "તાવ, હળવો-મધ્યમ દુખાવો",
       dosage: "પુખ્ત: 500–1000 મિગ્રા દર 4–6 કલાક. દિવસમાં max 4g.",
@@ -5383,6 +5687,44 @@ const ING_L10N = {
     },
   },
   pa: {
+    shelf:"ਸ਼ੈਲਫ",
+    shelfTitle:"ਮੇਰੀ ਸ਼ੈਲਫ",
+    shelfAddLbl:"शेल्फ में दवा जोड़ें",
+    shelfWho:"ਕੌਣ ਲੈਂਦਾ ਹੈ?",
+    shelfAddBtn:"+ ਸ਼ੈਲਫ ਵਿੱਚ ਜੋੜੋ",
+    shelfCustomTitle:"हमारी सूची में नहीं? खुद जोड़ें",
+    shelfCustomName:"दवा का नाम *",
+    shelfCustomComp:"संरचना / सॉल्ट (वैकल्पिक)",
+    shelfCustomNote:"नोट — खुराक, डॉक्टर… (वैकल्पिक)",
+    shelfCustomBtn:"+ ਕਸਟਮ ਦਵਾਈ",
+    shelfOnList:"मेरी शेल्फ पर",
+    shelfRemSection:"रिमाइंडर",
+    shelfEmpty:"अभी कोई दवा नहीं। ऊपर खोजकर Add दबाएँ",
+    shelfNoRem:"कोई रिमाइंडर नहीं। दवा जोड़कर Reminder दबाएँ",
+    shelfPick:"दवा चुनें",
+    shelfNotFound:"सूची में दवा नहीं मिली",
+    shelfAddedRem:"शेल्फ में जोड़ दी गई।\n\nरिमाइंडर सेट करें?",
+    shelfCustomAdded:"कस्टम दवा जुड़ गई।\n\nरिमाइंडर सेट करें?",
+    shelfNeedName:"दवा का नाम लिखें",
+    shelfOnlyCustom:"केवल कस्टम दवाएँ संपादित हो सकती हैं",
+    shelfEditName:"दवा का नाम",
+    shelfEditComp:"संरचना / सॉल्ट",
+    shelfEditNote:"नोट",
+    shelfEditWho:"कौन लेता/लेती है?",
+    shelfNameReq:"नाम ज़रूरी है",
+    shelfDelCustom:"यह कस्टम दवा पूरी तरह हटाएँ?",
+    shelfPersonSelf:"ਮੈਂ",
+    shelfPersonSpouse:"पति/पत्नी",
+    shelfPersonChild:"बच्चा",
+    shelfPersonParent:"माता-पिता",
+    shelfPersonOther:"अन्य",
+    shelfPersonCustomPh:"नाम (यदि अन्य)",
+    shelfRemBtn:"ਰਿਮਾਈਂਡਰ",
+    shelfRemove:"ਹਟਾਓ",
+    shelfEdit:"ਸੋਧ",
+    shelfCustomBadge:"कस्टम",
+    shelfDelRem:"रिमाइंडर हटाएँ",
+    shelfSearchPh:"डोलो 650, क्रोसिन...",
     "paracetamol": {
       uses: "ਬੁਖਾਰ, ਹਲਕਾ-ਦਰਮਿਆਨਾ ਦਰਦ",
       dosage: "ਬਾਲਗ: 500–1000 ਮਿਗ੍ਰਾ ਹਰ 4–6 ਘੰਟੇ. ਦਿਨ max 4g.",
@@ -5890,7 +6232,45 @@ let cmpSel = []; // up to 2 medicine names
 
 /* ========== i18n (UI only) ========== */
 const T = {
-  en:{ search:"Search", fav:"Favorites", recent:"Recent", compare:"Compare",
+  en:{
+    shelf:"Shelf",
+    shelfTitle:"My Shelf",
+    shelfAddLbl:"Add medicine to shelf",
+    shelfWho:"Who takes this?",
+    shelfAddBtn:"+ Add to My Shelf",
+    shelfCustomTitle:"Not in our list? Add your own",
+    shelfCustomName:"Medicine name *",
+    shelfCustomComp:"Composition / salt (optional)",
+    shelfCustomNote:"Note — dose, doctor… (optional)",
+    shelfCustomBtn:"+ Add custom medicine",
+    shelfOnList:"On my shelf",
+    shelfRemSection:"Reminders",
+    shelfEmpty:"No medicines on shelf yet. Search above and tap Add",
+    shelfNoRem:"No reminders yet. Add a medicine, then tap Reminder",
+    shelfPick:"Pick a medicine",
+    shelfNotFound:"Medicine not found in list",
+    shelfAddedRem:"Added to My Shelf.\n\nSet a reminder for this medicine?",
+    shelfCustomAdded:"Custom medicine added.\n\nSet a reminder?",
+    shelfNeedName:"Enter medicine name",
+    shelfOnlyCustom:"Only custom medicines can be edited",
+    shelfEditName:"Medicine name",
+    shelfEditComp:"Composition / salt",
+    shelfEditNote:"Note",
+    shelfEditWho:"Who takes this?",
+    shelfNameReq:"Name required",
+    shelfDelCustom:"Remove this custom medicine completely?",
+    shelfPersonSelf:"Self",
+    shelfPersonSpouse:"Spouse",
+    shelfPersonChild:"Child",
+    shelfPersonParent:"Parent",
+    shelfPersonOther:"Other",
+    shelfPersonCustomPh:"Name (if Other)",
+    shelfRemBtn:"Reminder",
+    shelfRemove:"Remove",
+    shelfEdit:"Edit",
+    shelfCustomBadge:"Custom",
+    shelfDelRem:"Delete reminder",
+    shelfSearchPh:"Dolo 650, Crocin...", search:"Search", fav:"Favorites", recent:"Recent", compare:"Compare",
     placeholder:"Dolo 650, Crocin, Combiflam...", ready:"{n} medicines • Offline",
     disclaimer:"⚠️ This is not medical advice. Always consult a doctor or pharmacist before taking any medicine.",
     intTitle:"Possible interactions (informational only)",
@@ -6298,7 +6678,7 @@ function setLang(code){
     if(b.dataset.page==="compare") b.innerHTML = "<span>⚖️</span>"+t("compare");
     if(b.dataset.page==="calc") b.innerHTML = "<span>🧮</span>Health";
     if(b.dataset.page==="remind") b.innerHTML = "<span>⏰</span>"+t("remind");
-    if(b.dataset.page==="fav") b.innerHTML = "<span>💊</span>Shelf";
+    if(b.dataset.page==="fav") b.innerHTML = "<span>💊</span>"+t("shelf");
     if(b.dataset.page==="recent") b.innerHTML = "<span>🕐</span>"+t("recent");
   });
   (function(){ const cnt=totalKnownCount(); const n=(cnt.total||cnt.loaded).toLocaleString(); document.getElementById("status").textContent = t("ready",{n:n}); })();
@@ -6311,7 +6691,7 @@ function setLang(code){
     if(b.dataset.page==="remind") b.innerHTML = "<span>⏰</span>"+t("remind");
       if(b.dataset.page==="search") b.innerHTML = "<span>🔍</span>"+t("search");
       if(b.dataset.page==="compare") b.innerHTML = "<span>⚖️</span>"+t("compare");
-      if(b.dataset.page==="fav") b.innerHTML = "<span>💊</span>Shelf";
+      if(b.dataset.page==="fav") b.innerHTML = "<span>💊</span>"+t("shelf");
       if(b.dataset.page==="recent") b.innerHTML = "<span>🕐</span>"+t("recent");
     });
     const rs = document.getElementById("remSaveBtn"); if(rs) rs.textContent = t("saveRem");
@@ -6323,6 +6703,31 @@ function setLang(code){
     const rfood = document.getElementById("remLblFood"); if(rfood) rfood.textContent = t("remFood");
     const rmin = document.getElementById("remLblMin"); if(rmin) rmin.textContent = t("remMin");
     updateRemFreqLabels();
+    // My Shelf labels
+    const sh = document.getElementById("shelfHdr"); if(sh) sh.textContent = "💊 " + t("shelfTitle");
+    const sal = document.getElementById("shelfAddLbl"); if(sal) sal.textContent = t("shelfAddLbl");
+    const sw = document.getElementById("shelfWhoLbl"); if(sw) sw.textContent = t("shelfWho");
+    const sq = document.getElementById("shelfQ"); if(sq) sq.placeholder = t("shelfSearchPh");
+    const sp = document.getElementById("shelfPerson");
+    if(sp){
+      const opts = sp.options;
+      if(opts[0]) opts[0].text = t("shelfPersonSelf");
+      if(opts[1]) opts[1].text = t("shelfPersonSpouse");
+      if(opts[2]) opts[2].text = t("shelfPersonChild");
+      if(opts[3]) opts[3].text = t("shelfPersonParent");
+      if(opts[4]) opts[4].text = t("shelfPersonOther");
+    }
+    const spc = document.getElementById("shelfPersonCustom"); if(spc) spc.placeholder = t("shelfPersonCustomPh");
+    // static section headers via data attributes - update by query
+    document.querySelectorAll("[data-i18n]").forEach(function(el){
+      const k = el.getAttribute("data-i18n");
+      if(k) el.textContent = t(k);
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(function(el){
+      const k = el.getAttribute("data-i18n-placeholder");
+      if(k) el.placeholder = t(k);
+    });
+    try{ renderFavs(); }catch(err){}
   }catch(e){}
 }
 
@@ -7163,7 +7568,7 @@ function shelfAddCustom(){
   const compEl = document.getElementById("customMedComp");
   const noteEl = document.getElementById("customMedNote");
   const name = (nameEl && nameEl.value || "").trim();
-  if(!name){ alert("Enter medicine name"); return; }
+  if(!name){ alert(t("shelfNeedName")); return; }
   // already exists?
   if(allSearchable().some(m => (m.n||"").toLowerCase() === name.toLowerCase())){
     // just add to shelf
@@ -7193,7 +7598,7 @@ function shelfAddCustom(){
   if(compEl) compEl.value = "";
   if(noteEl) noteEl.value = "";
   renderFavs();
-  if(confirm("Custom medicine added.\\n\\nSet a reminder?")){
+  if(confirm(t("shelfCustomAdded"))){
     remPickName = name;
     const rq = document.getElementById("remQ");
     if(rq) rq.value = name;
@@ -7205,17 +7610,17 @@ function shelfAddCustom(){
 }
 function shelfEditCustom(name){
   const med = customMeds.find(m => m.n === name);
-  if(!med){ alert("Only custom medicines can be edited"); return; }
-  const newName = prompt("Medicine name", med.n);
+  if(!med){ alert(t("shelfOnlyCustom")); return; }
+  const newName = prompt(t("shelfEditName"), med.n);
   if(newName === null) return;
-  const newComp = prompt("Composition / salt", med.c || "");
+  const newComp = prompt(t("shelfEditComp"), med.c || "");
   if(newComp === null) return;
-  const newNote = prompt("Note", med.note || med.u || "");
+  const newNote = prompt(t("shelfEditNote"), med.note || med.u || "");
   if(newNote === null) return;
-  const newPerson = prompt("Who takes this?", shelfMeta[name] || "Self");
+  const newPerson = prompt(t("shelfEditWho"), shelfMeta[name] || t("shelfPersonSelf"));
   if(newPerson === null) return;
   const nn = newName.trim();
-  if(!nn){ alert("Name required"); return; }
+  if(!nn){ alert(t("shelfNameReq")); return; }
   // update favs key if renamed
   favs = favs.map(n => n === name ? nn : n);
   if(shelfMeta[name] !== undefined){
@@ -7238,7 +7643,7 @@ function shelfEditCustom(name){
   try{ renderReminders(); }catch(e){}
 }
 function shelfDeleteCustom(name){
-  if(!confirm("Remove this custom medicine completely?")) return;
+  if(!confirm(t("shelfDelCustom"))) return;
   customMeds = customMeds.filter(m => m.n !== name);
   favs = favs.filter(n => n !== name);
   try{ delete shelfMeta[name]; }catch(e){}
@@ -7275,9 +7680,9 @@ function shelfPersonValue(){
 }
 function shelfAddPicked(){
   const name = shelfPickName || (document.getElementById("shelfQ") && document.getElementById("shelfQ").value.trim());
-  if(!name){ alert("Pick a medicine"); return; }
+  if(!name){ alert(t("shelfPick")); return; }
   const med = allSearchable().find(m => m.n === name);
-  if(!med){ alert("Medicine not found in list"); return; }
+  if(!med){ alert(t("shelfNotFound")); return; }
   if(!favs.includes(name)) favs.unshift(name);
   shelfMeta[name] = shelfPersonValue();
   safeSet("medFavs", favs);
@@ -7286,7 +7691,7 @@ function shelfAddPicked(){
   if(document.getElementById("shelfQ")) document.getElementById("shelfQ").value = "";
   renderFavs();
   // Ask to set reminder
-  if(confirm("Added to My Shelf.\\n\\nSet a reminder for this medicine?")){
+  if(confirm(t("shelfAddedRem"))){
     remPickName = name;
     const rq = document.getElementById("remQ");
     if(rq) rq.value = name;
@@ -7318,7 +7723,7 @@ function renderFavs(){
   const el = document.getElementById("favList");
   if(!el) return;
   if(!favs.length){
-    el.innerHTML='<div class="empty"><span>💊</span>No medicines on shelf yet.<br><span style="font-size:.85rem">Search above and tap Add</span></div>';
+    el.innerHTML='<div class="empty"><span>💊</span>'+t("shelfEmpty")+'</div>';
   } else {
     el.innerHTML = favs.map(n=>{
       const m = allSearchable().find(x=>x.n===n);
@@ -7332,14 +7737,14 @@ function renderFavs(){
           <div style="font-size:.78rem;color:var(--muted);margin-top:3px">${esc(sub)}</div>
           <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center">
             <span class="badge" style="background:var(--primary);color:#fff">👤 ${esc(person)}</span>
-            ${(m && m.custom) ? `<span class="badge">Custom</span>` : ""}
+            ${(m && m.custom) ? `<span class="badge">${t("shelfCustomBadge")}</span>` : ""}
             ${price?`<span class="badge">${esc(price)}</span>`:""}
           </div>
         </div>
         <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
-          <button type="button" class="btn-primary" style="flex:1;min-width:100px;padding:10px;font-size:.85rem" onclick="event.stopPropagation();shelfSetReminder('${escAttr(title)}')">⏰ Reminder</button>
-          ${(m && m.custom) ? `<button type="button" style="padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:.85rem" onclick="event.stopPropagation();shelfEditCustom('${escAttr(title)}')">Edit</button>` : ""}
-          <button type="button" style="padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:.85rem" onclick="event.stopPropagation();shelfRemove('${escAttr(title)}')">Remove</button>
+          <button type="button" class="btn-primary" style="flex:1;min-width:100px;padding:10px;font-size:.85rem" onclick="event.stopPropagation();shelfSetReminder('${escAttr(title)}')">⏰ ${t("shelfRemBtn")}</button>
+          ${(m && m.custom) ? `<button type="button" style="padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:.85rem" onclick="event.stopPropagation();shelfEditCustom('${escAttr(title)}')">${t("shelfEdit")}</button>` : ""}
+          <button type="button" style="padding:10px 12px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:.85rem" onclick="event.stopPropagation();shelfRemove('${escAttr(title)}')">${t("shelfRemove")}</button>
         </div>
       </div>`;
     }).join("");
@@ -7356,17 +7761,17 @@ function renderFavs(){
               <strong>${esc(r.name||"")}</strong>
               <div style="font-size:.8rem;color:var(--muted);margin-top:4px">👤 ${esc(person)} · ${esc(r.freq||"")} · ${esc(times)}</div>
             </div>
-            <button type="button" style="margin-top:8px;font-size:.78rem;padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--danger,#b91c1c)" onclick="deleteReminder('${escAttr(r.id||"")}')">Delete reminder</button>
+            <button type="button" style="margin-top:8px;font-size:.78rem;padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--danger,#b91c1c)" onclick="deleteReminder('${escAttr(r.id||"")}')">${t("shelfDelRem")}</button>
           </div>`;
         }).join("");
       } else {
-        sr.innerHTML = '<div class="empty" style="padding:12px"><span>⏰</span>No reminders yet. Add a medicine, then tap Reminder.</div>';
+        sr.innerHTML = '<div class="empty" style="padding:12px"><span>⏰</span>'+t("shelfNoRem")+'</div>';
       }
     }catch(e){ sr.innerHTML = ""; }
   }
   try{ fillIxList(); }catch(e){}
   const h = document.getElementById("shelfHdr");
-  if(h) h.textContent = "💊 My Shelf";
+  if(h) h.textContent = "💊 " + t("shelfTitle");
 }
 function renderRecent(){
   const el = document.getElementById("recentList");
