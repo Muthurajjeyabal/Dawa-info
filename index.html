@@ -377,43 +377,6 @@ html.elder.elder-contrast[data-theme="dark"] {
 
 
   
-  <!-- JAN AUSHADHI PAGE -->
-  <div id="page-jana" class="page">
-    <div class="hdr"><h1 id="janaHdr">🏪 Jan Aushadhi</h1></div>
-    <div class="card" style="margin-bottom:12px">
-      <p style="font-size:.9rem;line-height:1.5;color:var(--muted);margin:0 0 12px">
-        Government generic medicine stores (PMBJP). Same quality salts at lower price.
-      </p>
-      <button class="btn primary" style="width:100%;margin-bottom:8px" onclick="openJanaOfficial()">
-        📍 Official Store Locator
-      </button>
-      <button class="btn" style="width:100%;margin-bottom:8px;background:var(--bg2);border:1px solid var(--border);color:var(--text)" onclick="openJanaMaps()">
-        🗺️ Jan Aushadhi near me (Maps)
-      </button>
-      <button class="btn" style="width:100%;margin-bottom:8px;background:var(--bg2);border:1px solid var(--border);color:var(--text)" onclick="openJanaSugam()">
-        📱 Jan Aushadhi Sugam App
-      </button>
-    </div>
-    <div class="card" style="margin-bottom:12px">
-      <div style="font-size:.8rem;color:var(--muted);margin-bottom:6px">Search by PIN (opens official site)</div>
-      <div style="display:flex;gap:8px">
-        <input class="calc-in" id="janaPin" type="text" inputmode="numeric" maxlength="6" placeholder="PIN code e.g. 600001" style="margin:0;flex:1">
-        <button class="btn primary" onclick="openJanaPin()" style="white-space:nowrap">Find</button>
-      </div>
-    </div>
-    <div class="card">
-      <div style="font-weight:600;margin-bottom:8px">Helpline</div>
-      <a href="tel:18001808080" style="font-size:1.15rem;color:var(--primary);font-weight:700;text-decoration:none">1800-180-8080</a>
-      <div style="font-size:.8rem;color:var(--muted);margin-top:6px">Toll-free · Mon–Sat</div>
-      <div style="font-size:.8rem;color:var(--muted);margin-top:12px;line-height:1.45">
-        Carry doctor prescription. Ask for medicine by <strong>salt/generic name</strong>, not brand.
-      </div>
-    </div>
-    <p style="font-size:.75rem;color:var(--muted);text-align:center;margin-top:16px;padding:0 12px">
-      Store list is maintained by PMBI (Govt of India). We open the official locator so data stays accurate.
-    </p>
-  </div>
-
   <!-- CALCULATORS PAGE -->
   <div id="page-calc" class="page">
     <div class="hdr"><h1 id="calcHdr">🧮 Health</h1></div>
@@ -524,7 +487,6 @@ html.elder.elder-contrast[data-theme="dark"] {
   <button class="on" data-page="search" onclick="navTo('search')"><span>🔍</span>Search</button>
   <button data-page="compare" onclick="navTo('compare')"><span>⚖️</span>Compare</button>
   <button data-page="calc" onclick="navTo('calc')"><span>🧮</span>Health</button>
-  <button data-page="jana" onclick="navTo('jana')"><span>🏪</span>JanAush</button>
   <button data-page="remind" onclick="navTo('remind')"><span>⏰</span>Remind</button>
   <button data-page="fav" onclick="navTo('fav')"><span>❤️</span>Fav</button>
 </nav>
@@ -534,34 +496,9 @@ const M = [{"n":"Dolokind - SR Tablet","m":"Mankind Pharma Ltd","c":"Aceclofenac
 
 
 
-function openJanaOfficial(){
-  window.open('https://janaushadhi.gov.in/locate-kendra', '_blank', 'noopener');
-}
-function openJanaMaps(){
-  window.open('https://www.google.com/maps/search/Jan+Aushadhi+Kendra+near+me', '_blank', 'noopener');
-}
-function openJanaSugam(){
-  // Play Store listing for official app
-  window.open('https://play.google.com/store/apps/details?id=com.janaushadhi.sugam', '_blank', 'noopener');
-}
-function openJanaPin(){
-  const pin = (document.getElementById('janaPin').value||'').trim();
-  // Official site search is interactive; open locator + maps with pin
-  if(pin.length===6 && /^\d+$/.test(pin)){
-    window.open('https://www.google.com/maps/search/Jan+Aushadhi+Kendra+'+pin, '_blank', 'noopener');
-  } else {
-    openJanaOfficial();
-  }
-}
 
-/* ========== CHUNK + IndexedDB LOADER ========== */
-const DATA_BASE = 'data/';
-const IDB_NAME = 'dawa-info-v1';
-const IDB_STORE = 'chunks';
-let META = null;
-let extraMeds = [];
-let loadedChunkFiles = new Set();
-let idb = null;
+
+
 
 function openIDB(){
   return new Promise((resolve)=>{
@@ -1455,7 +1392,7 @@ const T = {
     placeholder:"Dolo 650, Crocin, Combiflam...", ready:"{n} medicines • Offline",
     disclaimer:"Not medical advice. Always consult a doctor or pharmacist.",
     share:"Share",
-    priceNote:"Prices vary by pack size. Confirm salt strength with pharmacist. Jan Aushadhi stores often cheaper for same generic.",
+    priceNote:"Prices vary by pack size. Confirm salt strength with pharmacist. Compare pack size; generic brands are often cheaper for the same composition.",
     noRes:"No results for '{q}'", results:"{n} results",
     uses:"Uses", dosage:"Dosage", side:"Side Effects", explain:"What is this for?",
     safety:"Safety Profile", pregnancy:"Pregnancy", breast:"Breastfeeding",
@@ -1480,7 +1417,7 @@ const T = {
     placeholder:"Dolo 650, Crocin...", ready:"{n} மருந்துகள் • Offline",
     disclaimer:"இது மருத்துவ ஆலோசனை அல்ல. மருத்துவர் அல்லது மருந்தாளரை அணுகவும்.",
     share:"பகிர்",
-    priceNote:"விலை pack size-ஐப் பொறுத்தது. Salt strength-ஐ மருந்தாளரிடம் உறுதி செய்யுங்கள். அதே generic Jan Aushadhi-ல் பெரும்பாலும் மலிவு.",
+    priceNote:"விலை pack size-ஐப் பொறுத்தது. Salt strength-ஐ மருந்தாளரிடம் உறுதி செய்யுங்கள். அதே composition-க்கு generic brands பெரும்பாலும் மலிவு.",
     noRes:"'{q}' கிடைக்கவில்லை", results:"{n} முடிவுகள்",
     uses:"பயன்கள்", dosage:"மருந்தளவு", side:"பக்க விளைவுகள்", explain:"இது எதற்கு?",
     safety:"பாதுகாப்பு", pregnancy:"கர்ப்பம்", breast:"தாய்ப்பால்",
@@ -1505,7 +1442,7 @@ const T = {
     placeholder:"Dolo 650, Crocin...", ready:"{n} दवाएँ • Offline",
     disclaimer:"यह चिकित्सकीय सलाह नहीं है। डॉक्टर या फार्मासिस्ट से सलाह लें।",
     share:"शेयर",
-    priceNote:"कीमत पैक साइज़ पर निर्भर करती है। सॉल्ट स्ट्रेंथ फार्मासिस्ट से पुष्टि करें। जन औषधि में अक्सर सस्ता मिलता है।",
+    priceNote:"कीमत पैक साइज़ पर निर्भर करती है। सॉल्ट स्ट्रेंथ फार्मासिस्ट से पुष्टि करें। एक ही साल्ट के जेनेरिक अक्सर सस्ते होते हैं।",
     noRes:"'{q}' नहीं मिला", results:"{n} परिणाम",
     uses:"उपयोग", dosage:"खुराक", side:"साइड इफेक्ट", explain:"यह किस लिए है?",
     safety:"सुरक्षा", pregnancy:"गर्भावस्था", breast:"स्तनपान",
@@ -1602,7 +1539,6 @@ function setLang(code){
     if(b.dataset.page==="search") b.innerHTML = "<span>🔍</span>"+t("search");
     if(b.dataset.page==="compare") b.innerHTML = "<span>⚖️</span>"+t("compare");
     if(b.dataset.page==="calc") b.innerHTML = "<span>🧮</span>Health";
-    if(b.dataset.page==="jana") b.innerHTML = "<span>🏪</span>JanAush";
     if(b.dataset.page==="remind") b.innerHTML = "<span>⏰</span>"+t("remind");
     if(b.dataset.page==="fav") b.innerHTML = "<span>💊</span>Shelf";
     if(b.dataset.page==="recent") b.innerHTML = "<span>🕐</span>"+t("recent");
@@ -1614,7 +1550,6 @@ function setLang(code){
     // already updated above partially - ensure remind label
     nav.forEach(b=>{
       if(b.dataset.page==="calc") b.innerHTML = "<span>🧮</span>Health";
-    if(b.dataset.page==="jana") b.innerHTML = "<span>🏪</span>JanAush";
     if(b.dataset.page==="remind") b.innerHTML = "<span>⏰</span>"+t("remind");
       if(b.dataset.page==="search") b.innerHTML = "<span>🔍</span>"+t("search");
       if(b.dataset.page==="compare") b.innerHTML = "<span>⚖️</span>"+t("compare");
@@ -1783,7 +1718,6 @@ function applyElder(){
       if(p==="search") btn.innerHTML = "<span>🔍</span>Search";
       if(p==="compare") btn.innerHTML = "<span>⚖️</span>Compare";
       if(p==="calc") btn.innerHTML = "<span>🧮</span>Health";
-      if(p==="jana") btn.innerHTML = "<span>🏪</span>Stores";
       if(p==="remind") btn.innerHTML = "<span>⏰</span>Alarm";
       if(p==="fav") btn.innerHTML = "<span>❤️</span>Saved";
     });
