@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="color-scheme:light dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -440,10 +440,162 @@ html.elder.elder-contrast[data-theme="dark"] {
   will-change: transform;
 }
 
+
+/* ===== Splash Screen ===== */
+.splash{
+  position:fixed;inset:0;z-index:9999;
+  background:linear-gradient(160deg,#0d9488 0%,#0f766e 50%,#115e59 100%);
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .5s ease, visibility .5s ease;
+}
+.splash.hide{opacity:0;visibility:hidden;pointer-events:none}
+.splash-inner{text-align:center;color:#fff;animation:splashIn .6s cubic-bezier(.22,1,.36,1) both}
+.splash-icon{font-size:3.2rem;margin-bottom:12px;filter:drop-shadow(0 8px 20px rgba(0,0,0,.2));animation:softPop .8s ease .2s both}
+.splash-title{font-size:1.75rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:4px}
+.splash-sub{font-size:.95rem;opacity:.85;font-weight:500;margin-bottom:28px;letter-spacing:0.02em}
+.splash-loader{
+  width:36px;height:36px;margin:0 auto;
+  border:3px solid rgba(255,255,255,.25);
+  border-top-color:#fff;border-radius:50%;
+  animation:spin .7s linear infinite;
+}
+@keyframes splashIn{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+[data-theme="dark"] .splash{
+  background:linear-gradient(160deg,#0f766e 0%,#0a1211 60%,#042f2e 100%);
+}
+
+/* ===== Typography polish ===== */
+body{
+  font-feature-settings:"kern" 1,"liga" 1;
+  letter-spacing:-0.01em;
+}
+.hdr h1{letter-spacing:-0.03em}
+.card-title{letter-spacing:-0.02em;line-height:1.35}
+.card-sub{line-height:1.45;letter-spacing:0}
+.section h3{letter-spacing:0.03em}
+.empty{padding:48px 24px}
+.empty span{font-size:2.8rem;margin-bottom:12px}
+.status{font-size:.88rem;letter-spacing:-0.01em;padding:10px 4px}
+
+/* Better spacing scale */
+.app{padding:16px 16px 10px}
+.hdr{padding:4px 2px 16px}
+.search-wrap{margin-bottom:16px}
+.card{padding:16px 16px;margin-bottom:14px}
+.chips{margin-bottom:8px;padding-bottom:12px}
+
+/* ===== Skeleton loading polish ===== */
+.skel{
+  background:linear-gradient(90deg, var(--bg2) 0%, var(--border) 40%, var(--bg2) 80%);
+  background-size:200% 100%;
+  animation:shimmer 1.35s ease-in-out infinite;
+  border-radius:var(--radius);
+  height:88px;margin-bottom:14px;
+  border:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.skel::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
+  animation:shimmer 1.35s ease-in-out infinite;
+}
+.skel-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px;margin-bottom:14px;box-shadow:var(--shadow);
+}
+.skel-line{
+  height:12px;border-radius:6px;margin-bottom:10px;
+  background:linear-gradient(90deg, var(--bg2) 0%, var(--border) 50%, var(--bg2) 100%);
+  background-size:200% 100%;animation:shimmer 1.35s ease-in-out infinite;
+}
+.skel-line.w60{width:60%}
+.skel-line.w40{width:40%}
+.skel-line.w80{width:80%}
+.skel-line.sm{height:10px;width:30%;margin-top:6px}
+[data-theme="dark"] .skel,
+[data-theme="dark"] .skel-line{
+  background:linear-gradient(90deg, #142422 0%, #1e3330 45%, #142422 90%);
+  background-size:200% 100%;
+}
+
+/* ===== Dark mode refine ===== */
+[data-theme="dark"] {
+  --bg: #071110;
+  --bg2: #0c1917;
+  --card: rgba(16,32,30,0.92);
+  --card-solid: #12201e;
+  --text: #e8f5f3;
+  --muted: #7aa8a2;
+  --primary: #2dd4bf;
+  --primary-d: #5eead4;
+  --accent: #14b8a6;
+  --border: rgba(45,212,191,0.14);
+  --shadow: 0 4px 28px rgba(0,0,0,0.45), 0 1px 3px rgba(0,0,0,0.2);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,0.55);
+}
+[data-theme="dark"] body{
+  background: linear-gradient(165deg, #071110 0%, #0c1917 40%, #0a1614 100%);
+}
+[data-theme="dark"] .search-wrap input{
+  background:rgba(16,32,30,0.95);border-color:rgba(45,212,191,0.18);
+}
+[data-theme="dark"] .search-wrap input:focus{
+  box-shadow:0 0 0 4px rgba(45,212,191,.18), var(--shadow);
+}
+[data-theme="dark"] .bnav{
+  background:rgba(12,25,23,0.95);border-top-color:rgba(45,212,191,0.1);
+  box-shadow:0 -6px 28px rgba(0,0,0,0.4);
+}
+[data-theme="dark"] .card{
+  background:rgba(16,32,30,0.9);border-color:rgba(45,212,191,0.12);
+}
+[data-theme="dark"] .chip{
+  background:rgba(16,32,30,0.85);border-color:rgba(45,212,191,0.12);
+}
+[data-theme="dark"] .sheet{
+  background:#12201e;box-shadow:0 -12px 48px rgba(0,0,0,.5);
+}
+[data-theme="dark"] .cmp-hero-card{
+  background:linear-gradient(160deg,#12201e,#0c1917);
+  border-color:rgba(45,212,191,0.15);
+}
+[data-theme="dark"] .icon-btn{
+  background:rgba(16,32,30,0.9);border-color:rgba(45,212,191,0.15);
+}
+[data-theme="dark"] .badge{
+  background:rgba(45,212,191,0.12);color:#5eead4;
+}
+[data-theme="dark"] meta, [data-theme="dark"] {
+  color-scheme: dark;
+}
+
+
+/* Interaction checker */
+.int-box{
+  border-radius:14px;padding:14px 14px;margin-bottom:10px;
+  border:1px solid var(--border);
+}
+.int-box.int-bad{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.28)}
+.int-box.int-warn{background:rgba(245,158,11,.10);border-color:rgba(245,158,11,.30)}
+.int-box.int-ok{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.25)}
+.int-title{font-weight:700;font-size:.9rem;margin-bottom:6px;color:var(--text)}
+.int-msg{font-size:.8rem;line-height:1.45;color:var(--muted)}
+.int-section{margin:14px 0 8px}
+
 </style>
 </head>
 <body>
-<div class="app">
+<!-- Splash Screen -->
+<div id="splash" class="splash">
+  <div class="splash-inner">
+    <div class="splash-icon">💊</div>
+    <div class="splash-title">Dawa Info</div>
+    <div class="splash-sub">தவா இன்போ</div>
+    <div class="splash-loader"></div>
+  </div>
+</div>
+<div class="app" id="appRoot" style="opacity:0;transition:opacity .45s ease">
   <!-- SEARCH PAGE -->
   <div id="page-search" class="page on">
     <div class="hdr">
@@ -1571,7 +1723,31 @@ let cmpSel = []; // up to 2 medicine names
 const T = {
   en:{ search:"Search", fav:"Favorites", recent:"Recent", compare:"Compare",
     placeholder:"Dolo 650, Crocin, Combiflam...", ready:"{n} medicines • Offline",
-    disclaimer:"Not medical advice. Always consult a doctor or pharmacist.",
+    disclaimer:"⚠️ This is not medical advice. Always consult a doctor or pharmacist before taking any medicine.",
+    intTitle:"Possible interactions (informational only)",
+    intOk:"No major rule matched in our limited data",
+    intOkMsg:"This does NOT mean the combination is safe. Data is incomplete. Always confirm with a doctor or pharmacist before taking medicines together.",
+    intFoot:"Limited automated check only. Not medical advice. We do not guarantee accuracy or completeness. Decisions must be made with a qualified doctor or pharmacist.",
+    intDup:"Same ingredient flagged",
+    intDupMsg:"Both may contain the same active ingredient. Possible overdose risk. Do not decide from this app — ask a doctor/pharmacist.",
+    intNsaid:"Two NSAID painkillers flagged",
+    intNsaidMsg:"Combining NSAIDs may increase stomach, kidney or heart risks. This is not a prescription decision tool — consult a doctor.",
+    intBleed:"Bleeding risk flagged",
+    intBleedMsg:"NSAID with blood thinner/antiplatelet may increase bleeding risk. Seek professional advice before combining.",
+    intSteroid:"Steroid + NSAID flagged",
+    intSteroidMsg:"May increase stomach ulcer risk. Ask your doctor or pharmacist.",
+    intSsri:"SSRI-related flag",
+    intSsriMsg:"Possible increased bleeding risk in some cases. Inform your doctor.",
+    intSed:"Drowsiness flag",
+    intSedMsg:"Both may cause sleepiness. Do not rely on this app for safety — ask a professional; avoid driving if unsure.",
+    intResp:"Serious sedation flag",
+    intRespMsg:"Sedative + opioid type combinations can be dangerous. Do not combine based on this app. Emergency medical advice only from professionals.",
+    intAbsorb:"Absorption flag",
+    intAbsorbMsg:"Antacid/calcium/iron may reduce some antibiotic effects. Timing advice must come from a pharmacist/doctor.",
+    intThyroid:"Thyroid absorption flag",
+    intThyroidMsg:"Iron/calcium may affect thyroid medicine absorption. Confirm timing with your doctor.",
+    intBp:"BP medicines note",
+    intBpMsg:"Sometimes used together under medical supervision. Not a recommendation. Follow only your doctor's advice.",
     share:"Share",
     priceNote:"Prices vary by pack size. Confirm salt strength with pharmacist. Compare pack size; generic brands are often cheaper for the same composition.",
     noRes:"No results for '{q}'", results:"{n} results",
@@ -1596,7 +1772,31 @@ const T = {
   },
   ta:{ search:"தேடு", fav:"பிடித்தவை", recent:"சமீபத்திய", compare:"ஒப்பிடு",
     placeholder:"Dolo 650, Crocin...", ready:"{n} மருந்துகள் • Offline",
-    disclaimer:"இது மருத்துவ ஆலோசனை அல்ல. மருத்துவர் அல்லது மருந்தாளரை அணுகவும்.",
+    disclaimer:"⚠️ இது மருத்துவ ஆலோசனை அல்ல. எந்த மருந்தையும் எடுப்பதற்கு முன் மருத்துவர் அல்லது மருந்தாளரை கலந்தாலோசிக்கவும்.",
+    intTitle:"சாத்தியமான இடைவினைகள் (தகவல் மட்டும்)",
+    intOk:"எங்கள் limited data-ல் முக்கிய rule பொருந்தவில்லை",
+    intOkMsg:"இதனால் இந்த சேர்க்கை பாதுகாப்பானது என்று அர்த்தமல்ல. தகவல் முழுமை அல்ல. மருந்துகளை ஒன்றாக எடுப்பதற்கு முன் மருத்துவர்/மருந்தாளரிடம் கட்டாயம் கேளுங்கள்.",
+    intFoot:"இது limited automated check மட்டும். மருத்துவ ஆலோசனை அல்ல. துல்லியம்/முழுமைக்கு உத்தரவாதம் இல்லை. முடிவுகளை தகுதி வாய்ந்த மருத்துவர் அல்லது மருந்தாளர் மூலமே எடுக்கவும்.",
+    intDup:"ஒரே மூலப்பொருள் — கவனிக்கவும்",
+    intDupMsg:"இரண்டிலும் ஒரே active ingredient இருக்க வாய்ப்பு. overdose ஆபத்து இருக்கலாம். இந்த app மட்டும் வைத்து முடிவு எடுக்க வேண்டாம் — மருத்துவரிடம் கேளுங்கள்.",
+    intNsaid:"இரண்டு NSAID — கவனிக்கவும்",
+    intNsaidMsg:"இரண்டு NSAID சேர்ப்பது வயிறு/சிறுநீரக/இதய அபாயத்தை அதிகரிக்கலாம். இது மருத்துவ உத்தரவு அல்ல — மருத்துவரை அணுகுங்கள்.",
+    intBleed:"இரத்தப்போக்கு அபாயம் — கவனிக்கவும்",
+    intBleedMsg:"NSAID உடன் blood thinner இருந்தால் அபாயம் அதிகரிக்கலாம். தொழில்முறை ஆலோசனை இல்லாமல் சேர்த்து எடுக்க வேண்டாம்.",
+    intSteroid:"ஸ்டீராய்டு + NSAID — கவனிக்கவும்",
+    intSteroidMsg:"வயிற்றுப் புண் அபாயம் அதிகரிக்கலாம். மருத்துவர்/மருந்தாளரிடம் கேளுங்கள்.",
+    intSsri:"SSRI தொடர்புடைய குறிப்பு",
+    intSsriMsg:"சில சூழல்களில் இரத்தப்போக்கு அபாயம் அதிகரிக்கலாம். மருத்துவரிடம் தெரிவியுங்கள்.",
+    intSed:"தூக்க அபாயம் — கவனிக்கவும்",
+    intSedMsg:"இரண்டும் தூக்கத்தை ஏற்படுத்தலாம். இந்த app பாதுகாப்பு உத்தரவாதம் அல்ல. வாகனம் ஓட்டுவது குறித்து நிபுணரிடம் கேளுங்கள்.",
+    intResp:"தீவிர எச்சரிக்கை",
+    intRespMsg:"Sedative + opioid வகை சேர்க்கைகள் ஆபத்தானவை. இந்த app அடிப்படையில் சேர்த்து எடுக்க வேண்டாம். மருத்துவ நிபுணரிடம் மட்டும் முடிவு எடுங்கள்.",
+    intAbsorb:"உறிஞ்சுதல் குறிப்பு",
+    intAbsorbMsg:"Antacid/calcium/iron சில ஆன்டிபயாடிக் விளைவைக் குறைக்கலாம். நேர இடைவெளி மருந்தாளர்/மருத்துவர் சொன்னபடி மட்டும்.",
+    intThyroid:"தைராய்டு உறிஞ்சுதல் குறிப்பு",
+    intThyroidMsg:"Iron/calcium தைராய்டு மருந்து உறிஞ்சுதலை பாதிக்கலாம். நேரத்தை மருத்துவரிடம் உறுதிப்படுத்துங்கள்.",
+    intBp:"ரத்த அழுத்த மருந்து குறிப்பு",
+    intBpMsg:"சில நேரம் மருத்துவர் மேற்பார்வையில் சேர்த்து கொடுக்கப்படலாம். இது பரிந்துரை அல்ல. உங்கள் மருத்துவர் சொன்னபடி மட்டும்.",
     share:"பகிர்",
     priceNote:"விலை pack size-ஐப் பொறுத்தது. Salt strength-ஐ மருந்தாளரிடம் உறுதி செய்யுங்கள். அதே composition-க்கு generic brands பெரும்பாலும் மலிவு.",
     noRes:"'{q}' கிடைக்கவில்லை", results:"{n} முடிவுகள்",
@@ -1621,7 +1821,7 @@ const T = {
   },
   hi:{ search:"खोजें", fav:"पसंदीदा", recent:"हालिया", compare:"तुलना",
     placeholder:"Dolo 650, Crocin...", ready:"{n} दवाएँ • Offline",
-    disclaimer:"यह चिकित्सकीय सलाह नहीं है। डॉक्टर या फार्मासिस्ट से सलाह लें।",
+    disclaimer:"⚠️ यह चिकित्सकीय सलाह नहीं है। कोई भी दवा लेने से पहले डॉक्टर या फार्मासिस्ट से सलाह लें।",
     share:"शेयर",
     priceNote:"कीमत पैक साइज़ पर निर्भर करती है। सॉल्ट स्ट्रेंथ फार्मासिस्ट से पुष्टि करें। एक ही साल्ट के जेनेरिक अक्सर सस्ते होते हैं।",
     noRes:"'{q}' नहीं मिला", results:"{n} परिणाम",
@@ -1646,30 +1846,198 @@ const T = {
   },
   te:{ search:"వెతకండి", fav:"ఇష్టాలు", recent:"ఇటీవల", compare:"పోల్చండి", placeholder:"Dolo 650...", ready:"{n} మందులు • Offline",
     disclaimer:"ఇది వైద్య సలహా కాదు. వైద్యుడు లేదా ఫార్మసిస్ట్‌ను సంప్రదించండి.",
+    intTitle:"సాధ్యమైన ఇంటరాక్షన్లు (సమాచారం మాత్రమే)",
+    intOk:"మా limited dataలో పెద్ద rule కనిపించలేదు",
+    intOkMsg:"ఇది కలయిక సురక్షితమని కాదు. డేటా అసంపూర్ణం. కలిపి తీసుకునే ముందు వైద్యుడు/ఫార్మసిస్ట్‌ను అడగండి.",
+    intFoot:"పరిమిత ఆటోమేటెడ్ చెక్ మాత్రమే. వైద్య సలహా కాదు. ఖచ్చితత్వ హామీ లేదు. నిర్ణయాలు వైద్యుడు/ఫార్మసిస్ట్ ద్వారానే.",
+    intDup:"ఒకే పదార్థం — గమనించండి",
+    intDupMsg:"రెండింటిలో ఒకే active ingredient ఉండవచ్చు. ఓవర్‌డోస్ ప్రమాదం. ఈ యాప్ మాత్రమే చూసి నిర్ణయించవద్దు.",
+    intNsaid:"రెండు NSAID — గమనించండి",
+    intNsaidMsg:"రెండు NSAID కలపడం ప్రమాదం పెంచవచ్చు. వైద్యుని సలహా తీసుకోండి.",
+    intBleed:"రక్తస్రావ ప్రమాదం",
+    intBleedMsg:"NSAIDతో బ్లడ్ థిన్నర్ ప్రమాదం పెంచవచ్చు. నిపుణుల సలహా లేకుండా కలపవద్దు.",
+    intSteroid:"స్టెరాయిడ్ + NSAID",
+    intSteroidMsg:"కడుపు అల్సర్ ప్రమాదం పెరగవచ్చు. వైద్యుడిని అడగండి.",
+    intSsri:"SSRI సంబంధిత హెచ్చరిక",
+    intSsriMsg:"కొన్ని సందర్భాల్లో రక్తస్రావ ప్రమాదం. వైద్యుడికి చెప్పండి.",
+    intSed:"నిద్ర/మత్తు హెచ్చరిక",
+    intSedMsg:"రెండూ నిద్ర తెచ్చవచ్చు. డాక్టర్‌ను అడగండి.",
+    intResp:"తీవ్ర హెచ్చరిక",
+    intRespMsg:"సెడేటివ్ + ఒపియాయిడ్ ప్రమాదకరం. ఈ యాప్ ఆధారంగా కలపవద్దు.",
+    intAbsorb:"శోషణ హెచ్చరిక",
+    intAbsorbMsg:"ఆంటాసిడ్/కాల్షియం/ఇనుము కొన్ని యాంటీబయాటిక్ ప్రభావం తగ్గించవచ్చు.",
+    intThyroid:"థైరాయిడ్ శోషణ",
+    intThyroidMsg:"ఇనుము/కాల్షియం థైరాయిడ్ మందును ప్రభావితం చేయవచ్చు. డాక్టర్‌ను అడగండి.",
+    intBp:"బిపి మందుల నోట్",
+    intBpMsg:"కొన్నిసార్లు డాక్టర్ పర్యవేక్షణలో కలిపి ఇస్తారు. ఇది సలహా కాదు.",
     share:"షేర్",
     priceNote:"ధర ప్యాక్ సైజ్ మీద ఆధారపడి ఉంటుంది. సాల్ట్ స్ట్రెంగ్త్ ఫార్మసిస్ట్‌తో నిర్ధారించండి.", noRes:"'{q}' కనబడలేదు", results:"{n} ఫలితాలు", uses:"ఉపయోగాలు", dosage:"మోతాదు", side:"దుష్ప్రభావాలు", explain:"ఇది దేనికి?", safety:"భద్రత", pregnancy:"గర్భం", breast:"చనుబాలు", driving:"డ్రైవింగ్", alcohol:"మద్యం", kidney:"మూత్రపిండాలు", liver:"కాలేయం", children:"పిల్లలు", elderly:"వృద్ధులు", manufacturer:"తయారీదారు", composition:"సంఘటన", price:"ధర", pack:"ప్యాక్", alternatives:"ప్రత్యామ్నాయాలు", rx:"ప్రిస్క్రిప్షన్", otc:"OTC", generic:"జెనెరిక్", brand:"బ్రాండ్", addCmp:"పోలికకు", favAdd:"సేవ్", favRem:"సేవ్", close:"మూసివేయి", emptyFav:"ఇష్టాలు లేవు", emptyRecent:"ఇటీవల లేవు", cmpTitle:"పోలిక", select2:"2 మందులు ఎంచుకోండి", remind:"రిమైండర్", saveRem:"సేవ్ చేయి", remMed:"మందు", remFreq:"తరచుదనం", remTime:"సమయం", remNote:"నోట్", remHint:"యాప్ తెరిచి ఉంటే మంచిది.", remSaved:"సేవ్ అయింది", remNone:"రిమైండర్లు లేవు", remDelete:"తొలగించు", daily1:"రోజు · 1", daily2:"రోజు · 2", daily3:"రోజు · 3", h3:"ప్రతి 3 గంటలు", h4:"ప్రతి 4 గంటలు", h6:"ప్రతి 6 గంటలు", h8:"ప్రతి 8 గంటలు", weekly:"వారం ఒక్కసారి", monthly:"నెల ఒక్కసారి", takeMed:"మందు సమయం", remFood:"ఆహారం", remMin:"నిమిషాలు", foodNone:"ఆహార సంబంధం లేదు", foodBefore:"తినే ముందు", foodAfter:"తిన్న తర్వాత", foodWith:"ఆహారంతో", minBefore:"తినే ముందు {n} నిమి", minAfter:"తిన్న తర్వాత {n} నిమి" },
   ml:{ search:"തിരയുക", fav:"പ്രിയങ്കരം", recent:"അടുത്തിടെ", compare:"താരതമ്യം", placeholder:"Dolo 650...", ready:"{n} മരുന്നുകൾ • Offline",
     disclaimer:"ഇത് വൈദ്യോപദേശമല്ല. ഡോക്ടറെയോ ഫാർമസിസ്റ്റിനെയോ സമീപിക്കുക.",
+    intTitle:"സാധ്യമായ ഇടപെടലുകൾ (വിവരം മാത്രം)",
+    intOk:"ഞങ്ങളുടെ limited data-യിൽ വലിയ rule കണ്ടില്ല",
+    intOkMsg:"ഇത് സുരക്ഷിതമാണെന്ന് അർത്ഥമില്ല. ഡോക്ടർ/ഫാർമസിസ്റ്റിനോട് സ്ഥിരീകരിക്കുക.",
+    intFoot:"പരിമിത ഓട്ടോമേറ്റഡ് ചെക്ക് മാത്രം. വൈദ്യോപദേശമല്ല. കൃത്യതയ്ക്ക് ഉറപ്പില്ല.",
+    intDup:"ഒരേ ഘടകം — ശ്രദ്ധിക്കുക",
+    intDupMsg:"രണ്ടിലും ഒരേ active ingredient ഉണ്ടാകാം. ഓവർഡോസ് അപകടം. ഈ ആപ്പ് മാത്രം കൊണ്ട് തീരുമാനിക്കരുത്.",
+    intNsaid:"രണ്ട് NSAID — ശ്രദ്ധിക്കുക",
+    intNsaidMsg:"രണ്ട് NSAID കൂട്ടിയാൽ അപകടം കൂടാം. ഡോക്ടറെ സമീപിക്കുക.",
+    intBleed:"രക്തസ്രാവ അപകടം",
+    intBleedMsg:"NSAID-യോടൊപ്പം ബ്ലഡ് തിന്നർ അപകടം വർദ്ധിപ്പിക്കാം.",
+    intSteroid:"സ്റ്റിറോയിഡ് + NSAID",
+    intSteroidMsg:"ആമാശയ അൾസർ അപകടം കൂടാം. ഡോക്ടറോട് ചോദിക്കുക.",
+    intSsri:"SSRI ബന്ധപ്പെട്ട മുന്നറിയിപ്പ്",
+    intSsriMsg:"ചില സന്ദർഭങ്ങളിൽ രക്തസ്രാവ അപകടം. ഡോക്ടറെ അറിയിക്കുക.",
+    intSed:"മയക്കം മുന്നറിയിപ്പ്",
+    intSedMsg:"രണ്ടും മയക്കം ഉണ്ടാക്കാം. ഡോക്ടറോട് ചോദിക്കുക.",
+    intResp:"ഗുരുതര മുന്നറിയിപ്പ്",
+    intRespMsg:"സെഡേറ്റീവ് + ഒപിയോയിഡ് അപകടകരം. ഈ ആപ്പ് അടിസ്ഥാനമാക്കി കൂട്ടരുത്.",
+    intAbsorb:"ആഗിരണം മുന്നറിയിപ്പ്",
+    intAbsorbMsg:"ആന്റാസിഡ്/കാൽസ്യം/ഇരുമ്പ് ചില ആൻറിബയോട്ടിക് ഫലം കുറയ്ക്കാം.",
+    intThyroid:"തൈറോയ്ഡ് ആഗിരണം",
+    intThyroidMsg:"ഇരുമ്പ്/കാൽസ്യം തൈറോയ്ഡ് മരുന്നിനെ ബാധിക്കാം.",
+    intBp:"ബിപി മരുന്ന് കുറിപ്പ്",
+    intBpMsg:"ചിലപ്പോൾ ഡോക്ടർ നിരീക്ഷണത്തിൽ ഒരുമിച്ച് നൽകാം. ഇത് ശുപാർശയല്ല.",
     share:"ഷെയർ",
     priceNote:"വില പായ്ക്ക് സൈസ് അനുസരിച്ച് മാറും. സാൾട്ട് സ്ട്രെങ്ത് ഫാർമസിസ്റ്റിനോട് ഉറപ്പാക്കുക.", noRes:"'{q}' കണ്ടെത്തിയില്ല", results:"{n} ഫലങ്ങൾ", uses:"ഉപയോഗങ്ങൾ", dosage:"ഡോസ്", side:"പാർശ്വഫലങ്ങൾ", explain:"ഇതെന്തിന്?", safety:"സുരക്ഷ", pregnancy:"ഗർഭം", breast:"മുലയൂട്ടൽ", driving:"ഡ്രൈവിംഗ്", alcohol:"മദ്യം", kidney:"വൃക്ക", liver:"കരൾ", children:"കുട്ടികൾ", elderly:"പ്രായമായവർ", manufacturer:"നിർമ്മാതാവ്", composition:"ഘടന", price:"വില", pack:"പായ്ക്ക്", alternatives:"ബദലുകൾ", rx:"പ്രിസ്ക്രിപ്ഷൻ", otc:"OTC", generic:"ജനറിക്", brand:"ബ്രാൻഡ്", addCmp:"താരതമ്യം", favAdd:"സേവ്", favRem:"സേവ്", close:"അടയ്ക്കുക", emptyFav:"പ്രിയങ്കരമില്ല", emptyRecent:"അടുത്തിടെയില്ല", cmpTitle:"താരതമ്യം", select2:"2 മരുന്നുകൾ", remind:"റിമൈൻഡർ", saveRem:"സേവ് ചെയ്യുക", remMed:"മരുന്ന്", remFreq:"ആവൃത്തി", remTime:"സമയം", remNote:"കുറിപ്പ്", remHint:"ആപ്പ് തുറന്നിരിക്കുമ്പോൾ മികച്ചത്.", remSaved:"സേവ് ചെയ്തു", remNone:"റിമൈൻഡറുകളില്ല", remDelete:"ഇല്ലാതാക്കുക", daily1:"ദിവസം · 1", daily2:"ദിവസം · 2", daily3:"ദിവസം · 3", h3:"ഓരോ 3 മണിക്കൂർ", h4:"ഓരോ 4 മണിക്കൂർ", h6:"ഓരോ 6 മണിക്കൂർ", h8:"ഓരോ 8 മണിക്കൂർ", weekly:"ആഴ്ചയിൽ ഒരിക്കൽ", monthly:"മാസത്തിൽ ഒരിക്കൽ", takeMed:"മരുന്ന് സമയം", remFood:"ഭക്ഷണം", remMin:"മിനിറ്റ്", foodNone:"ഭക്ഷണ ബന്ധമില്ല", foodBefore:"ഭക്ഷണത്തിന് മുമ്പ്", foodAfter:"ഭക്ഷണത്തിന് ശേഷം", foodWith:"ഭക്ഷണത്തോടൊപ്പം", minBefore:"{n} മിനിറ്റ് മുമ്പ്", minAfter:"{n} മിനിറ്റ് ശേഷം" },
   kn:{ search:"ಹುಡುಕಿ", fav:"ಮೆಚ್ಚಿನ", recent:"ಇತ್ತೀಚೆಗೆ", compare:"ಹೋಲಿಕೆ", placeholder:"Dolo 650...", ready:"{n} ಔಷಧಗಳು • Offline",
     disclaimer:"ಇದು ವೈದ್ಯಕೀಯ ಸಲಹೆಯಲ್ಲ. ವೈದ್ಯರು ಅಥವಾ ಫಾರ್ಮಸಿಸ್ಟ್ ಅನ್ನು ಸಂಪರ್ಕಿಸಿ.",
+    intTitle:"ಸಂಭವನೀಯ ಪರಸ್ಪರ ಕ್ರಿಯೆಗಳು (ಮಾಹಿತಿ ಮಾತ್ರ)",
+    intOk:"ನಮ್ಮ limited dataನಲ್ಲಿ ದೊಡ್ಡ rule ಕಂಡುಬಂದಿಲ್ಲ",
+    intOkMsg:"ಇದು ಸುರಕ್ಷಿತ ಎಂದಲ್ಲ. ವೈದ್ಯರು/ಫಾರ್ಮಸಿಸ್ಟ್ ಜೊತೆ ಖಚಿತಪಡಿಸಿ.",
+    intFoot:"ಸೀಮಿತ ಸ್ವಯಂಚಾಲಿತ ಪರಿಶೀಲನೆ ಮಾತ್ರ. ವೈದ್ಯಕೀಯ ಸಲಹೆ ಅಲ್ಲ. ಖಚಿತತೆಗೆ ಖಾತರಿ ಇಲ್ಲ.",
+    intDup:"ಒಂದೇ ಘಟಕ — ಗಮನಿಸಿ",
+    intDupMsg:"ಎರಡರಲ್ಲೂ ಒಂದೇ active ingredient ಇರಬಹುದು. ಓವರ್‌ಡೋಸ್ ಅಪಾಯ. ಈ ಅಪ್ಲಿ ಮಾತ್ರ ನಿರ್ಧರಿಸಬೇಡಿ.",
+    intNsaid:"ಎರಡು NSAID — ಗಮನಿಸಿ",
+    intNsaidMsg:"ಎರಡು NSAID ಸೇರಿಸಿದರೆ ಅಪಾಯ ಹೆಚ್ಚಾಗಬಹುದು. ವೈದ್ಯರನ್ನು ಕೇಳಿ.",
+    intBleed:"ರಕ್ತಸ್ರಾವ ಅಪಾಯ",
+    intBleedMsg:"NSAID ಜೊತೆ ಬ್ಲಡ್ ಥಿನ್ನರ್ ಅಪಾಯ ಹೆಚ್ಚಿಸಬಹುದು.",
+    intSteroid:"ಸ್ಟೆರಾಯ್ಡ್ + NSAID",
+    intSteroidMsg:"ಹೊಟ್ಟೆ ಅಲ್ಸರ್ ಅಪಾಯ ಹೆಚ್ಚಾಗಬಹುದು.",
+    intSsri:"SSRI ಸಂಬಂಧಿತ ಎಚ್ಚರಿಕೆ",
+    intSsriMsg:"ಕೆಲವು ಸಂದರ್ಭಗಳಲ್ಲಿ ರಕ್ತಸ್ರಾವ ಅಪಾಯ. ವೈದ್ಯರಿಗೆ ತಿಳಿಸಿ.",
+    intSed:"ನಿದ್ರೆ/ಮತ್ತು ಎಚ್ಚರಿಕೆ",
+    intSedMsg:"ಎರಡೂ ನಿದ್ರೆ ತರಿಸಬಹುದು. ವೈದ್ಯರನ್ನು ಕೇಳಿ.",
+    intResp:"ಗಂಭೀರ ಎಚ್ಚರಿಕೆ",
+    intRespMsg:"ಸೆಡೇಟಿವ್ + ಒಪಿಯಾಯ್ಡ್ ಅಪಾಯಕಾರಿ. ಈ ಅಪ್ಲಿ ಆಧರಿಸಿ ಸೇರಿಸಬೇಡಿ.",
+    intAbsorb:"ಹೀರುವಿಕೆ ಎಚ್ಚರಿಕೆ",
+    intAbsorbMsg:"ಆಂಟಾಸಿಡ್/ಕ್ಯಾಲ್ಸಿಯಂ/ಕಬ್ಬಿಣ ಕೆಲವು ಆಂಟಿಬಯಾಟಿಕ್ ಪರಿಣಾಮ ಕಡಿಮೆ ಮಾಡಬಹುದು.",
+    intThyroid:"ಥೈರಾಯ್ಡ್ ಹೀರುವಿಕೆ",
+    intThyroidMsg:"ಕಬ್ಬಿಣ/ಕ್ಯಾಲ್ಸಿಯಂ ಥೈರಾಯ್ಡ್ ಔಷಧಿಗೆ ಪರಿಣಾಮ ಬೀರಬಹುದು.",
+    intBp:"ಬಿಪಿ ಔಷಧಿ ಟಿಪ್ಪಣಿ",
+    intBpMsg:"ಕೆಲವೊಮ್ಮೆ ವೈದ್ಯರ ಮೇಲ್ವಿಚಾರಣೆಯಲ್ಲಿ ಕೊಡುತ್ತಾರೆ. ಇದು ಶಿಫಾರಸು ಅಲ್ಲ.",
     share:"ಹಂಚು",
     priceNote:"ಬೆಲೆ ಪ್ಯಾಕ್ ಗಾತ್ರದಂತೆ ಬದಲಾಗುತ್ತದೆ. ಸಾಲ್ಟ್ ಸ್ಟ್ರೆಂಥ್ ಫಾರ್ಮಸಿಸ್ಟ್‌ನೊಂದಿಗೆ ದೃಢಪಡಿಸಿ.", noRes:"'{q}' ಸಿಗಲಿಲ್ಲ", results:"{n} ಫಲಿತಾಂಶ", uses:"ಉಪಯೋಗ", dosage:"ಡೋಸ್", side:"ಪಾರ್ಶ್ವ ಪರಿಣಾಮ", explain:"ಇದು ಯಾಕೆ?", safety:"ಸುರಕ್ಷತೆ", pregnancy:"ಗರ್ಭ", breast:"ಸ್ತನ್ಯಪಾನ", driving:"ಡ್ರೈವಿಂಗ್", alcohol:"ಮದ್ಯ", kidney:"ಮೂತ್ರಪಿಂಡ", liver:"ಯಕೃತ್", children:"ಮಕ್ಕಳು", elderly:"ವಯಸ್ಕರು", manufacturer:"ತಯಾರಕ", composition:"ಸಂಯೋಜನೆ", price:"ಬೆಲೆ", pack:"ಪ್ಯಾಕ್", alternatives:"ಪರ್ಯಾಯ", rx:"ಪ್ರಿಸ್ಕ್ರಿಪ್ಷನ್", otc:"OTC", generic:"ಜೆನೆರಿಕ್", brand:"ಬ್ರಾಂಡ್", addCmp:"ಹೋಲಿಕೆಗೆ", favAdd:"ಸೇವ್", favRem:"ಸೇವ್", close:"ಮುಚ್ಚಿ", emptyFav:"ಮೆಚ್ಚಿನವು ಇಲ್ಲ", emptyRecent:"ಇತ್ತೀಚಿನವು ಇಲ್ಲ", cmpTitle:"ಹೋಲಿಕೆ", select2:"2 ಔಷಧ", remind:"ಜ್ಞಾಪನೆ", saveRem:"ಸೇವ್", remMed:"ಔಷಧ", remFreq:"ಆವರ್ತನೆ", remTime:"ಸಮಯ", remNote:"ಟಿಪ್ಪಣಿ", remHint:"ಅಪ್ ತೆರೆದಾಗ ಉತ್ತಮ.", remSaved:"ಸೇವ್", remNone:"ಜ್ಞಾಪನೆಗಳಿಲ್ಲ", remDelete:"ಅಳಿಸಿ", daily1:"ದಿನ · 1", daily2:"ದಿನ · 2", daily3:"ದಿನ · 3", h3:"ಪ್ರತಿ 3 ಗಂಟೆ", h4:"ಪ್ರತಿ 4 ಗಂಟೆ", h6:"ಪ್ರತಿ 6 ಗಂಟೆ", h8:"ಪ್ರತಿ 8 ಗಂಟೆ", weekly:"ವಾರಕ್ಕೊಮ್ಮೆ", monthly:"ತಿಂಗಳಿಗೊಮ್ಮೆ", takeMed:"ಔಷಧ ಸಮಯ", remFood:"ಆಹಾರ", remMin:"ನಿಮಿಷ", foodNone:"ಸಂಬಂಧವಿಲ್ಲ", foodBefore:"ಊಟಕ್ಕೆ ಮುನ್ನ", foodAfter:"ಊಟದ ನಂತರ", foodWith:"ಊಟದೊಂದಿಗೆ", minBefore:"{n} ನಿಮಿಷ ಮುನ್ನ", minAfter:"{n} ನಿಮಿಷ ನಂತರ" },
   bn:{ search:"খুঁজুন", fav:"পছন্দ", recent:"সাম্প্রতিক", compare:"তুলনা", placeholder:"Dolo 650...", ready:"{n} ওষুধ • Offline",
     disclaimer:"এটি চিকিৎসা পরামর্শ নয়। ডাক্তার বা ফার্মাসিস্টের পরামর্শ নিন।",
+    intTitle:"সম্ভাব্য ইন্টারঅ্যাকশন (শুধু তথ্য)",
+    intOk:"আমাদের সীমিত ডেটায় বড় নিয়ম মেলেনি",
+    intOkMsg:"এর মানে সংমিশ্রণ নিরাপদ নয়। ডাক্তার/ফার্মাসিস্টের সাথে নিশ্চিত করুন।",
+    intFoot:"সীমিত স্বয়ংক্রিয় যাচাই মাত্র। চিকিৎসা পরামর্শ নয়। নির্ভুলতার নিশ্চয়তা নেই।",
+    intDup:"একই উপাদান — সতর্ক থাকুন",
+    intDupMsg:"দুটিতে একই active ingredient থাকতে পারে। ওভারডোজ ঝুঁকি। শুধু এই অ্যাপ দিয়ে সিদ্ধান্ত নেবেন না।",
+    intNsaid:"দুই NSAID — সতর্ক থাকুন",
+    intNsaidMsg:"দুই NSAID মিলালে ঝুঁকি বাড়তে পারে। ডাক্তার দেখান।",
+    intBleed:"রক্তপাতের ঝুঁকি",
+    intBleedMsg:"NSAID-এর সাথে ব্লাড থিনার ঝুঁকি বাড়াতে পারে।",
+    intSteroid:"স্টেরয়েড + NSAID",
+    intSteroidMsg:"পেটের আলসার ঝুঁকি বাড়তে পারে।",
+    intSsri:"SSRI সম্পর্কিত সতর্কতা",
+    intSsriMsg:"কিছু ক্ষেত্রে রক্তপাতের ঝুঁকি। ডাক্তারকে জানান।",
+    intSed:"ঘুম/তন্দ্রা সতর্কতা",
+    intSedMsg:"দুটোই ঘুম আনতে পারে। ডাক্তারকে জিজ্ঞাসা করুন।",
+    intResp:"গুরুতর সতর্কতা",
+    intRespMsg:"সেডেটিভ + ওপিয়য়েড বিপজ্জনক। এই অ্যাপ দেখে মিশাবেন না।",
+    intAbsorb:"শোষণ সতর্কতা",
+    intAbsorbMsg:"অ্যান্টাসিড/ক্যালসিয়াম/আয়রন কিছু অ্যান্টিবায়োটিকের প্রভাব কমাতে পারে।",
+    intThyroid:"থাইরয়েড শোষণ",
+    intThyroidMsg:"আয়রন/ক্যালসিয়াম থাইরয়েড ওষুধকে প্রভাবিত করতে পারে।",
+    intBp:"বিপি ওষুধ নোট",
+    intBpMsg:"কখনো ডাক্তারের তত্ত্বাবধানে একসাথে দেওয়া হয়। এটি পরামর্শ নয়।",
     share:"শেয়ার",
     priceNote:"দাম প্যাক সাইজ অনুযায়ী বদলায়। সল্ট স্ট্রেন্থ ফার্মাসিস্টের সাথে নিশ্চিত করুন।", noRes:"'{q}' পাওয়া যায়নি", results:"{n} ফলাফল", uses:"ব্যবহার", dosage:"মাত্রা", side:"পার্শ্বপ্রতিক্রিয়া", explain:"এটি কিসের জন্য?", safety:"নিরাপত্তা", pregnancy:"গর্ভাবস্থা", breast:"স্তন্যপান", driving:"ড্রাইভিং", alcohol:"মদ", kidney:"কিডনি", liver:"লিভার", children:"শিশু", elderly:"বয়স্ক", manufacturer:"প্রস্তুতকারক", composition:"উপাদান", price:"দাম", pack:"প্যাক", alternatives:"বিকল্প", rx:"প্রেসক্রিপশন", otc:"OTC", generic:"জেনেরিক", brand:"ব্র্যান্ড", addCmp:"তুলনায়", favAdd:"সেভ", favRem:"সেভড", close:"বন্ধ", emptyFav:"পছন্দ নেই", emptyRecent:"সাম্প্রতিক নেই", cmpTitle:"তুলনা", select2:"২টি ওষুধ", remind:"রিমাইন্ডার", saveRem:"সেভ করুন", remMed:"ওষুধ", remFreq:"কতবার", remTime:"সময়", remNote:"নোট", remHint:"অ্যাপ খোলা থাকলে ভালো।", remSaved:"সেভ", remNone:"রিমাইন্ডার নেই", remDelete:"মুছুন", daily1:"প্রতিদিন · ১", daily2:"প্রতিদিন · ২", daily3:"প্রতিদিন · ৩", h3:"প্রতি ৩ ঘণ্টা", h4:"প্রতি ৪ ঘণ্টা", h6:"প্রতি ৬ ঘণ্টা", h8:"প্রতি ৮ ঘণ্টা", weekly:"সপ্তাহে একবার", monthly:"মাসে একবার", takeMed:"ওষুধের সময়", remFood:"খাবার", remMin:"মিনিট", foodNone:"সম্পর্ক নেই", foodBefore:"খাবারের আগে", foodAfter:"খাবারের পরে", foodWith:"খাবারের সাথে", minBefore:"{n} মিনিট আগে", minAfter:"{n} মিনিট পরে" },
   mr:{ search:"शोधा", fav:"आवडते", recent:"अलीकडील", compare:"तुलना", placeholder:"Dolo 650...", ready:"{n} औषधे • Offline",
     disclaimer:"ही वैद्यकीय सल्ला नाही. डॉक्टर किंवा फार्मासिस्ट यांचा सल्ला घ्या.",
+    intTitle:"संभाव्य इंटरॅक्शन (फक्त माहिती)",
+    intOk:"आमच्या limited data मध्ये मोठा नियम सापडला नाही",
+    intOkMsg:"याचा अर्थ मिश्रण सुरक्षित आहे असे नाही. डॉक्टरांशी/फार्मासिस्टशी खात्री करा.",
+    intFoot:"मर्यादित स्वयंचलित तपासणी फक्त. वैद्यकीय सल्ला नाही. अचूकतेची हमी नाही.",
+    intDup:"एकच घटक — लक्ष द्या",
+    intDupMsg:"दोन्हींमध्ये एकच active ingredient असू शकतो. ओव्हरडोज धोका. फक्त या अॅपवरून निर्णय घेऊ नका.",
+    intNsaid:"दोन NSAID — लक्ष द्या",
+    intNsaidMsg:"दोन NSAID एकत्र केल्यास धोका वाढू शकतो. डॉक्टरांना विचारा.",
+    intBleed:"रक्तस्राव धोका",
+    intBleedMsg:"NSAID सोबत ब्लड थिनर धोका वाढवू शकतो.",
+    intSteroid:"स्टिरॉइड + NSAID",
+    intSteroidMsg:"पोट अल्सर धोका वाढू शकतो.",
+    intSsri:"SSRI संबंधित इशारा",
+    intSsriMsg:"काही प्रकरणांत रक्तस्राव धोका. डॉक्टरांना सांगा.",
+    intSed:"झोप/शांतता इशारा",
+    intSedMsg:"दोन्ही झोप आणू शकतात. डॉक्टरांना विचारा.",
+    intResp:"गंभीर इशारा",
+    intRespMsg:"सेडेटिव्ह + ओपिऑइड धोकादायक. या अॅपवरून एकत्र करू नका.",
+    intAbsorb:"शोषण इशारा",
+    intAbsorbMsg:"अँटासिड/कॅल्शियम/लोह काही अँटीबायोटिक प्रभाव कमी करू शकते.",
+    intThyroid:"थायरॉइड शोषण",
+    intThyroidMsg:"लोह/कॅल्शियम थायरॉइड औषधावर परिणाम करू शकते.",
+    intBp:"बीपी औषध टीप",
+    intBpMsg:"कधी डॉक्टर देखरेखीखाली एकत्र देतात. ही शिफारस नाही.",
     share:"शेअर",
     priceNote:"किंमत पॅक साइझनुसार बदलते. सॉल्ट स्ट्रेंथ फार्मासिस्टकडे खात्री करा.", noRes:"'{q}' सापडले नाही", results:"{n} निकाल", uses:"उपयोग", dosage:"डोस", side:"दुष्परिणाम", explain:"हे कशासाठी?", safety:"सुरक्षा", pregnancy:"गर्भधारणा", breast:"स्तनपान", driving:"ड्रायव्हिंग", alcohol:"दारू", kidney:"मूत्रपिंड", liver:"यकृत", children:"मुले", elderly:"वृद्ध", manufacturer:"उत्पादक", composition:"घटक", price:"किंमत", pack:"पॅक", alternatives:"पर्याय", rx:"प्रिस्क्रिप्शन", otc:"OTC", generic:"जेनेरिक", brand:"ब्रँड", addCmp:"तुलनेत", favAdd:"सेव्ह", favRem:"सेव्ह्ड", close:"बंद", emptyFav:"आवडते नाहीत", emptyRecent:"अलीकडील नाहीत", cmpTitle:"तुलना", select2:"२ औषधे", remind:"रिमाइंडर", saveRem:"सेव्ह करा", remMed:"औषध", remFreq:"वारंवारता", remTime:"वेळ", remNote:"टीप", remHint:"अ‍ॅप उघडे असताना चांगले.", remSaved:"सेव्ह", remNone:"रिमाइंडर नाहीत", remDelete:"हटवा", daily1:"रोज · १", daily2:"रोज · २", daily3:"रोज · ३", h3:"दर ३ तास", h4:"दर ४ तास", h6:"दर ६ तास", h8:"दर ८ तास", weekly:"आठवड्यातून एकदा", monthly:"महिन्यातून एकदा", takeMed:"औषध वेळ", remFood:"जेवण", remMin:"मिनिटे", foodNone:"संबंध नाही", foodBefore:"जेवणापूर्वी", foodAfter:"जेवणानंतर", foodWith:"जेवणाबरोबर", minBefore:"{n} मिनिटे आधी", minAfter:"{n} मिनिटे नंतर" },
   gu:{ search:"શોધો", fav:"મનપસંદ", recent:"તાજેતરનું", compare:"સરખામણી", placeholder:"Dolo 650...", ready:"{n} દવાઓ • Offline",
     disclaimer:"આ તબીબી સલાહ નથી. ડૉક્ટર અથવા ફાર્માસિસ્ટની સલાહ લો.",
+    intTitle:"સંભવિત ઇન્ટરેક્શન (માત્ર માહિતી)",
+    intOk:"અમારા limited dataમાં મોટો નિયમ મળ્યો નથી",
+    intOkMsg:"આનો અર્થ સંયોજન સુરક્ષિત છે એવો નથી. ડૉક્ટર/ફાર્માસિસ્ટ પાસે ખાતરી કરો.",
+    intFoot:"મર્યાદિત સ્વચાલિત તપાસ માત્ર. તબીબી સલાહ નથી. ચોકસાઈની ગેરંટી નથી.",
+    intDup:"એક જ ઘટક — ધ્યાન આપો",
+    intDupMsg:"બંનેમાં એક જ active ingredient હોઈ શકે. ઓવરડોઝ જોખમ. ફક્ત આ એપથી નિર્ણય ન લો.",
+    intNsaid:"બે NSAID — ધ્યાન આપો",
+    intNsaidMsg:"બે NSAID ભેગા કરવાથી જોખમ વધી શકે. ડૉક્ટરને પૂછો.",
+    intBleed:"રક્તસ્ત્રાવ જોખમ",
+    intBleedMsg:"NSAID સાથે બ્લડ થિનર જોખમ વધારી શકે.",
+    intSteroid:"સ્ટીરોઈડ + NSAID",
+    intSteroidMsg:"પેટના અલ્સરનું જોખમ વધી શકે.",
+    intSsri:"SSRI સંબંધિત ચેતવણી",
+    intSsriMsg:"કેટલાક કિસ્સામાં રક્તસ્ત્રાવ જોખમ. ડૉક્ટરને જણાવો.",
+    intSed:"ઊંઘ/નિદ્રા ચેતવણી",
+    intSedMsg:"બંને ઊંઘ લાવી શકે. ડૉક્ટરને પૂછો.",
+    intResp:"ગંભીર ચેતવણી",
+    intRespMsg:"સેડેટિવ + ઓપિયોઇડ જોખમી. આ એપના આધારે ભેગા ન કરો.",
+    intAbsorb:"શોષણ ચેતવણી",
+    intAbsorbMsg:"એન્ટાસિડ/કેલ્શિયમ/લોખંડ કેટલીક એન્ટિબાયોટિક અસર ઘટાડી શકે.",
+    intThyroid:"થાઇરોઇડ શોષણ",
+    intThyroidMsg:"લોખંડ/કેલ્શિયમ થાઇરોઇડ દવાને અસર કરી શકે.",
+    intBp:"બીપી દવા નોંધ",
+    intBpMsg:"ક્યારેક ડૉક્ટરની દેખરેખ હેઠળ સાથે આપવામાં આવે. આ સલાહ નથી.",
     share:"શેર",
     priceNote:"કિંમત પેક સાઇઝ પર આધાર રાખે છે. સોલ્ટ સ્ટ્રેન્થ ફાર્માસિસ્ટ સાથે ચકાસો.", noRes:"'{q}' મળ્યું નથી", results:"{n} પરિણામ", uses:"ઉપયોગ", dosage:"ડોઝ", side:"આડઅસર", explain:"આ શા માટે?", safety:"સુરક્ષા", pregnancy:"ગર્ભાવસ્થા", breast:"સ્તનપાન", driving:"ડ્રાઇવિંગ", alcohol:"દારૂ", kidney:"કિડની", liver:"લિવર", children:"બાળકો", elderly:"વૃદ્ધો", manufacturer:"ઉત્પાદક", composition:"ઘટક", price:"કિંમત", pack:"પેક", alternatives:"વિકલ્પ", rx:"પ્રિસ્ક્રિપ્શન", otc:"OTC", generic:"જેનેરિક", brand:"બ્રાન્ડ", addCmp:"સરખામણીમાં", favAdd:"સેવ", favRem:"સેવ્ડ", close:"બંધ", emptyFav:"મનપસંદ નથી", emptyRecent:"તાજેતરનું નથી", cmpTitle:"સરખામણી", select2:"2 દવા", remind:"રિમાઇન્ડર", saveRem:"સેવ કરો", remMed:"દવા", remFreq:"આવૃત્તિ", remTime:"સમય", remNote:"નોંધ", remHint:"એપ ખુલ્લી હોય ત્યારે સારું.", remSaved:"સેવ", remNone:"રિમાઇન્ડર નથી", remDelete:"કાઢી નાખો", daily1:"રોજ · 1", daily2:"રોજ · 2", daily3:"રોજ · 3", h3:"દર 3 કલાક", h4:"દર 4 કલાક", h6:"દર 6 કલાક", h8:"દર 8 કલાક", weekly:"અઠવાડિયે એકવાર", monthly:"મહિને એકવાર", takeMed:"દવાનો સમય", remFood:"ભોજન", remMin:"મિનિટ", foodNone:"સંબંધ નથી", foodBefore:"જમ્યા પહેલાં", foodAfter:"જમ્યા પછી", foodWith:"જમવા સાથે", minBefore:"{n} મિનિટ પહેલાં", minAfter:"{n} મિનિટ પછી" },
   pa:{ search:"ਖੋਜੋ", fav:"ਪਸੰਦੀਦਾ", recent:"ਹਾਲੀਆ", compare:"ਤੁਲਨਾ", placeholder:"Dolo 650...", ready:"{n} ਦਵਾਈਆਂ • Offline",
     disclaimer:"ਇਹ ਮੈਡੀਕਲ ਸਲਾਹ ਨਹੀਂ। ਡਾਕਟਰ ਜਾਂ ਫਾਰਮਾਸਿਸਟ ਨਾਲ ਸਲਾਹ ਕਰੋ।",
+    intTitle:"ਸੰਭਾਵਿਤ ਇੰਟਰਐਕਸ਼ਨ (ਸਿਰਫ ਜਾਣਕਾਰੀ)",
+    intOk:"ਸਾਡੇ limited data ਵਿੱਚ ਵੱਡਾ ਨਿਯਮ ਨਹੀਂ ਮਿਲਿਆ",
+    intOkMsg:"ਇਸਦਾ ਮਤਲਬ ਮਿਸ਼ਰਣ ਸੁਰੱਖਿਅਤ ਹੈ ਨਹੀਂ। ਡਾਕਟਰ/ਫਾਰਮਾਸਿਸਟ ਨਾਲ ਪੁਸ਼ਟੀ ਕਰੋ।",
+    intFoot:"ਸੀਮਿਤ ਆਟੋਮੈਟਿਕ ਜਾਂਚ ਮਾਤਰ। ਮੈਡੀਕਲ ਸਲਾਹ ਨਹੀਂ। ਸਹੀ ਹੋਣ ਦੀ ਗਾਰੰਟੀ ਨਹੀਂ।",
+    intDup:"ਇੱਕੋ ਤੱਤ — ਧਿਆਨ ਦਿਓ",
+    intDupMsg:"ਦੋਵਾਂ ਵਿੱਚ ਇੱਕੋ active ingredient ਹੋ ਸਕਦਾ ਹੈ। ਓਵਰਡੋਜ਼ ਖਤਰਾ। ਸਿਰਫ ਇਸ ਐਪ ਤੋਂ ਫੈਸਲਾ ਨਾ ਲਓ।",
+    intNsaid:"ਦੋ NSAID — ਧਿਆਨ ਦਿਓ",
+    intNsaidMsg:"ਦੋ NSAID ਮਿਲਾਉਣ ਨਾਲ ਖਤਰਾ ਵਧ ਸਕਦਾ ਹੈ। ਡਾਕਟਰ ਨੂੰ ਪੁੱਛੋ।",
+    intBleed:"ਖੂਨ ਵਗਣ ਦਾ ਖਤਰਾ",
+    intBleedMsg:"NSAID ਨਾਲ ਬਲੱਡ ਥਿਨਰ ਖਤਰਾ ਵਧਾ ਸਕਦਾ ਹੈ।",
+    intSteroid:"ਸਟੀਰੌਇਡ + NSAID",
+    intSteroidMsg:"ਪੇਟ ਦੇ ਅਲਸਰ ਦਾ ਖਤਰਾ ਵਧ ਸਕਦਾ ਹੈ।",
+    intSsri:"SSRI ਸਬੰਧਤ ਚੇਤਾਵਨੀ",
+    intSsriMsg:"ਕੁਝ ਮਾਮਲਿਆਂ ਵਿੱਚ ਖੂਨ ਵਗਣ ਦਾ ਖਤਰਾ। ਡਾਕਟਰ ਨੂੰ ਦੱਸੋ।",
+    intSed:"ਨੀਂਦ/ਸੁਸਤੀ ਚੇਤਾਵਨੀ",
+    intSedMsg:"ਦੋਵੇਂ ਨੀਂਦ ਲਿਆ ਸਕਦੇ ਹਨ। ਡਾਕਟਰ ਨੂੰ ਪੁੱਛੋ।",
+    intResp:"ਗੰਭੀਰ ਚੇਤਾਵਨੀ",
+    intRespMsg:"ਸੈਡੇਟਿਵ + ਓਪੀਓਇਡ ਖਤਰਨਾਕ। ਇਸ ਐਪ ਦੇ ਆਧਾਰ ਤੇ ਨਾ ਮਿਲਾਓ।",
+    intAbsorb:"ਸੋਖਣ ਚੇਤਾਵਨੀ",
+    intAbsorbMsg:"ਐਂਟਾਸਿਡ/ਕੈਲਸ਼ੀਅਮ/ਆਇਰਨ ਕੁਝ ਐਂਟੀਬਾਇਓਟਿਕ ਪ੍ਰਭਾਵ ਘਟਾ ਸਕਦੇ ਹਨ।",
+    intThyroid:"ਥਾਈਰਾਇਡ ਸੋਖਣ",
+    intThyroidMsg:"ਆਇਰਨ/ਕੈਲਸ਼ੀਅਮ ਥਾਈਰਾਇਡ ਦਵਾਈ ਨੂੰ ਪ੍ਰਭਾਵਿਤ ਕਰ ਸਕਦੇ ਹਨ।",
+    intBp:"ਬੀਪੀ ਦਵਾਈ ਨੋਟ",
+    intBpMsg:"ਕਈ ਵਾਰ ਡਾਕਟਰ ਦੀ ਨਿਗਰਾਨੀ ਹੇਠ ਇਕੱਠੇ ਦਿੱਤੀ ਜਾਂਦੀ ਹੈ। ਇਹ ਸਲਾਹ ਨਹੀਂ।",
     share:"ਸਾਂਝਾ",
     priceNote:"ਕੀਮਤ ਪੈਕ ਸਾਈਜ਼ ਤੇ ਨਿਰਭਰ ਕਰਦੀ ਹੈ। ਸਾਲਟ ਸਟ੍ਰੈਂਥ ਫਾਰਮਾਸਿਸਟ ਨਾਲ ਪੁਸ਼ਟੀ ਕਰੋ।", noRes:"'{q}' ਨਹੀਂ ਮਿਲੀ", results:"{n} ਨਤੀਜੇ", uses:"ਵਰਤੋਂ", dosage:"ਖੁਰਾਕ", side:"ਸਾਈਡ ਇਫੈਕਟ", explain:"ਇਹ ਕਿਸ ਲਈ?", safety:"ਸੁਰੱਖਿਆ", pregnancy:"ਗਰਭ", breast:"ਦੁੱਧ ਚੁੰਘਾਉਣਾ", driving:"ਡਰਾਈਵਿੰਗ", alcohol:"ਸ਼ਰਾਬ", kidney:"ਗੁਰਦੇ", liver:"ਜਿਗਰ", children:"ਬੱਚੇ", elderly:"ਬਜ਼ੁਰਗ", manufacturer:"ਨਿਰਮਾਤਾ", composition:"ਘਟਕ", price:"ਕੀਮਤ", pack:"ਪੈਕ", alternatives:"ਵਿਕਲਪ", rx:"ਪ੍ਰਿਸਕ੍ਰਿਪਸ਼ਨ", otc:"OTC", generic:"ਜੈਨਰਿਕ", brand:"ਬ੍ਰਾਂਡ", addCmp:"ਤੁਲਨਾ ਵਿੱਚ", favAdd:"ਸੇਵ", favRem:"ਸੇਵਡ", close:"ਬੰਦ", emptyFav:"ਪਸੰਦੀਦਾ ਨਹੀਂ", emptyRecent:"ਹਾਲੀਆ ਨਹੀਂ", cmpTitle:"ਤੁਲਨਾ", select2:"2 ਦਵਾਈਆਂ", remind:"ਰੀਮਾਈਂਡਰ", saveRem:"ਸੇਵ ਕਰੋ", remMed:"ਦਵਾਈ", remFreq:"ਆਵਿਰਤੀ", remTime:"ਸਮਾਂ", remNote:"ਨੋਟ", remHint:"ਐਪ ਖੁੱਲ੍ਹੀ ਹੋਵੇ ਤਾਂ ਵਧੀਆ।", remSaved:"ਸੇਵ", remNone:"ਰੀਮਾਈਂਡਰ ਨਹੀਂ", remDelete:"ਮਿਟਾਓ", daily1:"ਰੋਜ਼ · 1", daily2:"ਰੋਜ਼ · 2", daily3:"ਰੋਜ਼ · 3", h3:"ਹਰ 3 ਘੰਟੇ", h4:"ਹਰ 4 ਘੰਟੇ", h6:"ਹਰ 6 ਘੰਟੇ", h8:"ਹਰ 8 ਘੰਟੇ", weekly:"ਹਫ਼ਤੇ ਵਿੱਚ ਇੱਕ ਵਾਰ", monthly:"ਮਹੀਨੇ ਵਿੱਚ ਇੱਕ ਵਾਰ", takeMed:"ਦਵਾਈ ਸਮਾਂ", remFood:"ਖਾਣਾ", remMin:"ਮਿੰਟ", foodNone:"ਸਬੰਧ ਨਹੀਂ", foodBefore:"ਖਾਣੇ ਤੋਂ ਪਹਿਲਾਂ", foodAfter:"ਖਾਣੇ ਤੋਂ ਬਾਅਦ", foodWith:"ਖਾਣੇ ਨਾਲ", minBefore:"{n} ਮਿੰਟ ਪਹਿਲਾਂ", minAfter:"{n} ਮਿੰਟ ਬਾਅਦ" }
 };
@@ -1870,6 +2238,10 @@ function shareMedicine(name){
 function toggleTheme(){
   theme = theme==="dark"?"light":"dark";
   document.documentElement.setAttribute("data-theme", theme==="dark"?"dark":"");
+  try{
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if(meta) meta.setAttribute("content", theme==="dark" ? "#0a1211" : "#0d9488");
+  }catch(e){}
   try{ localStorage.setItem("medTheme", theme); }catch(e){}
 }
 
@@ -2121,7 +2493,10 @@ function openDetail(name){
     <div class="row-actions" style="margin-top:8px">
       <button class="btn" style="background:var(--primary);color:#fff;border-color:var(--primary)" onclick="shareMedicine('${escAttr(med.n)}')">📤 ${t("share")}</button>
     </div>
-    <p style="font-size:.75rem;color:var(--muted);margin-top:16px;text-align:center">⚠️ ${t("disclaimer")}</p>
+    <div style="margin-top:18px;padding:14px 14px;border-radius:14px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);text-align:center">
+      <div style="font-size:.78rem;font-weight:650;color:#dc2626;line-height:1.45">⚠️ ${t("disclaimer")}</div>
+      <div style="font-size:.7rem;color:var(--muted);margin-top:6px;line-height:1.4">For informational purposes only. Not a substitute for professional medical advice.</div>
+    </div>
   `;
   document.getElementById("detailOverlay").classList.add("show");
 }
@@ -2168,7 +2543,7 @@ function doSearch(){
   }
   const instant = renderHits(allSearchable());
   if(!instant){
-    status.innerHTML = '<div class="skel"></div>';
+    status.innerHTML = `<div class="skel-card"><div class="skel-line w80"></div><div class="skel-line w60"></div><div class="skel-line sm"></div></div><div class="skel-card"><div class="skel-line w80"></div><div class="skel-line w40"></div><div class="skel-line sm"></div></div>`;
   }
   // 2) Load more chunks in background, then refresh results
   (async function(){
@@ -2341,6 +2716,161 @@ function shareCompare(){
   }
 }
 
+
+/* ========== MEDICINE INTERACTION CHECKER ========== */
+// Rule-based: same class pairs, known risky combos
+const INTERACT_CLASSES = {
+  nsaid: ["ibuprofen","diclofenac","aceclofenac","naproxen","aspirin","mefenamic","ketorolac","piroxicam","indomethacin","nimesulide","etoricoxib","celecoxib"],
+  anticoagulant: ["warfarin","heparin","enoxaparin","rivaroxaban","apixaban","dabigatran","clopidogrel","aspirin"],
+  ssri: ["sertraline","fluoxetine","escitalopram","paroxetine","citalopram","fluvoxamine"],
+  steroid: ["prednisolone","prednisone","dexamethasone","methylprednisolone","deflazacort","betamethasone","hydrocortisone"],
+  antibiotic_fluoro: ["ciprofloxacin","levofloxacin","ofloxacin","norfloxacin","moxifloxacin"],
+  antibiotic_macro: ["azithromycin","erythromycin","clarithromycin"],
+  antacid: ["pantoprazole","omeprazole","rabeprazole","esomeprazole","lansoprazole","ranitidine","famotidine"],
+  metformin: ["metformin"],
+  statin: ["atorvastatin","rosuvastatin","simvastatin","pravastatin"],
+  benzodiazepine: ["alprazolam","clonazepam","diazepam","lorazepam","nitrazepam"],
+  opioid: ["tramadol","codeine","morphine","oxycodone","fentanyl","dextropropoxyphene"],
+  antihistamine_sed: ["cetirizine","levocetirizine","diphenhydramine","hydroxyzine","promethazine","chlorpheniramine"],
+  calcium_channel: ["amlodipine","nifedipine","diltiazem","verapamil"],
+  acei_arb: ["enalapril","ramipril","lisinopril","telmisartan","losartan","olmesartan","valsartan"],
+  diuretic: ["furosemide","torsemide","hydrochlorothiazide","spironolactone","indapamide"],
+  thyroid: ["levothyroxine","thyroxine"],
+  iron: ["ferrous","iron"],
+  calcium: ["calcium"],
+  paracetamol: ["paracetamol","acetaminophen"]
+};
+
+function getClassesForKey(key){
+  const k = (key||"").toLowerCase();
+  const out = [];
+  for(const [cls, keys] of Object.entries(INTERACT_CLASSES)){
+    if(keys.some(x => k.includes(x) || x.includes(k))) out.push(cls);
+  }
+  return out;
+}
+
+function checkInteractions(ingsA, ingsB){
+  const alerts = [];
+  const keysA = ingsA.map(i => i.key);
+  const keysB = ingsB.map(i => i.key);
+  const classesA = new Set();
+  const classesB = new Set();
+  ingsA.forEach(i => getClassesForKey(i.key).forEach(c => classesA.add(c)));
+  ingsB.forEach(i => getClassesForKey(i.key).forEach(c => classesB.add(c)));
+
+  // Same active ingredient (duplicate)
+  for(const k of keysA){
+    if(keysB.includes(k)){
+      alerts.push({
+        level: "red",
+        title: t("intDup") || "Same ingredient flagged",
+        msg: t("intDupMsg") || ("Both may contain " + k + ". Possible overdose risk. Ask a doctor/pharmacist — do not decide from this app.")
+      });
+    }
+  }
+
+  // Two NSAIDs
+  if(classesA.has("nsaid") && classesB.has("nsaid")){
+    const onlyAsp = (keysA.length===1 && keysA[0].includes("aspirin") && !keysB.some(k=>k.includes("aspirin")==false && getClassesForKey(k).includes("nsaid")));
+    alerts.push({
+      level: "red",
+      title: t("intNsaid") || "Two painkillers (NSAIDs)",
+      msg: t("intNsaidMsg") || "Two NSAIDs may increase stomach, kidney or heart risks. Consult a doctor — this app is not a decision tool."
+    });
+  }
+
+  // NSAID + anticoagulant / aspirin combo risk
+  if((classesA.has("nsaid") && classesB.has("anticoagulant")) || (classesB.has("nsaid") && classesA.has("anticoagulant"))){
+    alerts.push({
+      level: "red",
+      title: t("intBleed") || "Bleeding risk",
+      msg: t("intBleedMsg") || "NSAID with blood thinner may increase bleeding risk. Seek professional advice before combining."
+    });
+  }
+
+  // Steroid + NSAID
+  if((classesA.has("steroid") && classesB.has("nsaid")) || (classesB.has("steroid") && classesA.has("nsaid"))){
+    alerts.push({
+      level: "yellow",
+      title: t("intSteroid") || "Steroid + NSAID",
+      msg: t("intSteroidMsg") || "Increases stomach ulcer risk. Take with food / stomach protection if doctor advised."
+    });
+  }
+
+  // SSRI + NSAID / anticoagulant
+  if(classesA.has("ssri") && (classesB.has("nsaid") || classesB.has("anticoagulant"))){
+    alerts.push({level:"yellow", title: t("intSsri")||"SSRI interaction", msg: t("intSsriMsg")||"May increase bleeding risk. Inform your doctor."});
+  }
+  if(classesB.has("ssri") && (classesA.has("nsaid") || classesA.has("anticoagulant"))){
+    alerts.push({level:"yellow", title: t("intSsri")||"SSRI interaction", msg: t("intSsriMsg")||"May increase bleeding risk. Inform your doctor."});
+  }
+
+  // Sedating antihistamine + benzodiazepine / opioid
+  if(classesA.has("antihistamine_sed") && (classesB.has("benzodiazepine") || classesB.has("opioid"))){
+    alerts.push({level:"red", title: t("intSed")||"Extra drowsiness", msg: t("intSedMsg")||"Both cause sleepiness. Avoid driving; risk of excess sedation."});
+  }
+  if(classesB.has("antihistamine_sed") && (classesA.has("benzodiazepine") || classesA.has("opioid"))){
+    alerts.push({level:"red", title: t("intSed")||"Extra drowsiness", msg: t("intSedMsg")||"Both cause sleepiness. Avoid driving; risk of excess sedation."});
+  }
+
+  // Benzo + opioid
+  if((classesA.has("benzodiazepine") && classesB.has("opioid")) || (classesB.has("benzodiazepine") && classesA.has("opioid"))){
+    alerts.push({level:"red", title: t("intResp")||"Breathing risk", msg: t("intRespMsg")||"Opioid + sedative can slow breathing. Dangerous combination — doctor only."});
+  }
+
+  // Fluoroquinolone + antacid / calcium / iron (absorption)
+  if(classesA.has("antibiotic_fluoro") && (classesB.has("antacid") || classesB.has("calcium") || classesB.has("iron"))){
+    alerts.push({level:"yellow", title: t("intAbsorb")||"Absorption", msg: t("intAbsorbMsg")||"Antacid/calcium/iron can reduce antibiotic effect. Separate doses by 2–4 hours."});
+  }
+  if(classesB.has("antibiotic_fluoro") && (classesA.has("antacid") || classesA.has("calcium") || classesA.has("iron"))){
+    alerts.push({level:"yellow", title: t("intAbsorb")||"Absorption", msg: t("intAbsorbMsg")||"Antacid/calcium/iron can reduce antibiotic effect. Separate doses by 2–4 hours."});
+  }
+
+  // Thyroid + iron/calcium
+  if(classesA.has("thyroid") && (classesB.has("iron") || classesB.has("calcium"))){
+    alerts.push({level:"yellow", title: t("intThyroid")||"Thyroid absorption", msg: t("intThyroidMsg")||"Iron/calcium reduce thyroid medicine absorption. Take thyroid on empty stomach, separate by 4 hours."});
+  }
+  if(classesB.has("thyroid") && (classesA.has("iron") || classesA.has("calcium"))){
+    alerts.push({level:"yellow", title: t("intThyroid")||"Thyroid absorption", msg: t("intThyroidMsg")||"Iron/calcium reduce thyroid medicine absorption. Take thyroid on empty stomach, separate by 4 hours."});
+  }
+
+  // ACEI/ARB + diuretic (often intentional but caution)
+  if((classesA.has("acei_arb") && classesB.has("diuretic")) || (classesB.has("acei_arb") && classesA.has("diuretic"))){
+    alerts.push({level:"green", title: t("intBp")||"BP combination", msg: t("intBpMsg")||"Often prescribed together for blood pressure. Monitor BP and kidney function as advised by doctor."});
+  }
+
+  // Double paracetamol risk already caught by same key
+
+  // Deduplicate by title
+  const seen = new Set();
+  const unique = [];
+  for(const a of alerts){
+    if(!seen.has(a.title)){ seen.add(a.title); unique.push(a); }
+  }
+  return unique;
+}
+
+function interactionHtml(alerts){
+  const foot = `<div style="font-size:.72rem;color:var(--muted);margin-top:10px;line-height:1.4">${t("intFoot")||"This is only a limited automated check. Incomplete. Not medical advice. Always ask a doctor or pharmacist before combining medicines."}</div>`;
+  if(!alerts || !alerts.length){
+    return `<div class="int-box int-ok">
+      <div class="int-title">ℹ️ ${t("intOk")||"No major rule matched"}</div>
+      <div class="int-msg">${t("intOkMsg")||"Our limited data did not flag a major known conflict. This does NOT mean the combination is safe. Confirm with a doctor or pharmacist."}</div>
+      ${foot}
+    </div>`;
+  }
+  return alerts.map(a => {
+    const cls = a.level==="red"?"int-bad":(a.level==="yellow"?"int-warn":"int-ok");
+    const icon = a.level==="red"?"🚫":(a.level==="yellow"?"⚠️":"ℹ️");
+    return `<div class="int-box ${cls}">
+      <div class="int-title">${icon} ${esc(a.title)}</div>
+      <div class="int-msg">${esc(a.msg)}</div>
+    </div>`;
+  }).join("") + foot;
+}
+
+
 function renderCompare(){
   const a = allSearchable().find(m=>m.n===cmpSel[0]);
   const b = allSearchable().find(m=>m.n===cmpSel[1]);
@@ -2406,6 +2936,10 @@ function renderCompare(){
           ${safetyRows.map(r=>`<tr><th>${esc(r[0])}</th><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("")}
         </tbody>
       </table>
+
+      <div class="cmp-section-title">💊 ${t("intTitle")||"Possible interactions (informational only)"}</div>
+      <div class="int-section">${interactionHtml(checkInteractions(ia, ib))}</div>
+      <p style="font-size:.72rem;color:var(--muted);text-align:center;margin:8px 0 4px">${t("disclaimer")}</p>
 
       <button class="share-btn-premium" onclick="shareCompare()">📤 ${t("share")} Comparison</button>
     </div>`;
@@ -2803,6 +3337,24 @@ updateCmpBar();
 try{ remFreqChange(); renderReminders(); }catch(e){}
 setInterval(checkReminders, 30000);
 setTimeout(checkReminders, 2000);
+
+
+/* ===== Splash Screen ===== */
+(function(){
+  function hideSplash(){
+    var s = document.getElementById("splash");
+    var app = document.getElementById("appRoot");
+    if(app) app.style.opacity = "1";
+    if(s){
+      s.classList.add("hide");
+      setTimeout(function(){ try{ s.remove(); }catch(e){} }, 550);
+    }
+  }
+  // Prefer when fonts/layout ready; max 1.8s
+  if(document.readyState === "complete") setTimeout(hideSplash, 700);
+  else window.addEventListener("load", function(){ setTimeout(hideSplash, 700); });
+  setTimeout(hideSplash, 1800); // safety
+})();
 
 /* ===== PWA Service Worker Registration ===== */
 if ("serviceWorker" in navigator) {
