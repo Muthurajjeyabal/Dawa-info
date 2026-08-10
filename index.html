@@ -591,6 +591,168 @@ body{
 
 .btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-d,#0f766e));color:#fff;border:none;border-radius:14px;padding:14px 18px;font-weight:700;font-size:.95rem;cursor:pointer;box-shadow:0 4px 14px rgba(13,148,136,.25)}
 .btn-primary:active{transform:scale(.98)}
+
+/* ===== Premium UI 2026 pass ===== */
+:root{
+  --radius:18px;
+  --radius-sm:12px;
+  --shadow:0 4px 24px rgba(15,23,42,.06), 0 1px 3px rgba(15,23,42,.04);
+  --shadow-lg:0 12px 40px rgba(15,23,42,.1);
+}
+body{ -webkit-font-smoothing:antialiased; letter-spacing:-0.01em; }
+.card{
+  border-radius:var(--radius);
+  padding:16px 16px 14px;
+  margin-bottom:12px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--border);
+  transition:transform .2s cubic-bezier(.22,1,.36,1), box-shadow .25s;
+  animation:cardIn .35s cubic-bezier(.22,1,.36,1) both;
+}
+.card:active{ transform:scale(.98); }
+@keyframes cardIn{
+  from{ opacity:0; transform:translateY(10px); }
+  to{ opacity:1; transform:none; }
+}
+.results .card:nth-child(1){ animation-delay:.02s }
+.results .card:nth-child(2){ animation-delay:.05s }
+.results .card:nth-child(3){ animation-delay:.08s }
+.results .card:nth-child(4){ animation-delay:.11s }
+.results .card:nth-child(5){ animation-delay:.14s }
+.results .card:nth-child(n+6){ animation-delay:.16s }
+
+.home-hero{
+  text-align:center; padding:28px 16px 20px;
+  animation:cardIn .45s ease both;
+}
+.home-hero-icon{
+  width:72px;height:72px;margin:0 auto 14px;
+  border-radius:22px;
+  background:linear-gradient(145deg,var(--primary),#0f766e);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;
+  box-shadow:0 10px 28px rgba(13,148,136,.35);
+}
+.home-hero h2{
+  font-size:1.2rem; font-weight:800; letter-spacing:-0.03em;
+  color:var(--text); margin:0 0 6px;
+}
+.home-hero p{
+  font-size:.88rem; color:var(--muted); margin:0 0 18px; line-height:1.45;
+}
+.home-chips{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+.home-chip{
+  padding:8px 14px; border-radius:999px;
+  background:var(--card); border:1px solid var(--border);
+  font-size:.8rem; font-weight:600; color:var(--primary-d);
+  cursor:pointer; box-shadow:var(--shadow);
+  transition:transform .15s, background .15s;
+}
+.home-chip:active{ transform:scale(.96); background:rgba(13,148,136,.08); }
+
+.empty{
+  text-align:center; padding:48px 24px; color:var(--muted);
+  animation:cardIn .4s ease both;
+}
+.empty span{ font-size:2.6rem; display:block; margin-bottom:10px; filter:grayscale(.1); }
+
+.bnav{
+  backdrop-filter:blur(16px) saturate(1.2);
+  -webkit-backdrop-filter:blur(16px) saturate(1.2);
+  box-shadow:0 -4px 24px rgba(15,23,42,.06);
+  border-top:1px solid var(--border);
+  padding-bottom:max(8px, env(safe-area-inset-bottom));
+}
+.bnav button{
+  transition:color .2s, transform .15s;
+  border-radius:12px;
+}
+.bnav button.on{
+  color:var(--primary);
+  font-weight:700;
+}
+.bnav button:active{ transform:scale(.92); }
+
+/* Detail sticky action bar */
+.detail-sticky{
+  position:sticky; bottom:0; z-index:5;
+  margin:16px -4px -8px;
+  padding:12px 4px 8px;
+  background:linear-gradient(to top, var(--bg) 70%, transparent);
+  display:flex; gap:8px;
+}
+.detail-sticky .btn{
+  flex:1; padding:13px 10px; border-radius:14px; font-weight:700; font-size:.88rem;
+  border:1px solid var(--border); background:var(--card); color:var(--text);
+  box-shadow:var(--shadow); cursor:pointer;
+}
+.detail-sticky .btn.primary{
+  background:linear-gradient(135deg,var(--primary),#0f766e);
+  color:#fff; border-color:transparent;
+  box-shadow:0 6px 18px rgba(13,148,136,.3);
+}
+
+.sheet-handle{
+  width:40px; height:4px; border-radius:4px;
+  background:var(--border); margin:6px auto 14px;
+}
+#detailSheet{
+  padding-bottom:calc(24px + env(safe-area-inset-bottom));
+}
+#detailSheet h2{
+  font-size:1.35rem; font-weight:800; letter-spacing:-0.03em;
+  line-height:1.25; margin-bottom:4px;
+}
+#detailSheet .section{
+  margin-top:18px;
+}
+#detailSheet .section h3{
+  font-size:.78rem; font-weight:700; letter-spacing:.04em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:8px;
+}
+#detailSheet .box, #detailSheet .explain{
+  border-radius:var(--radius-sm); line-height:1.5;
+}
+
+.search-wrap input, #q{
+  border-radius:16px !important;
+  padding:14px 16px !important;
+  font-size:1rem !important;
+  box-shadow:var(--shadow);
+  transition:box-shadow .2s, border-color .2s;
+}
+.search-wrap input:focus, #q:focus{
+  box-shadow:0 0 0 3px rgba(13,148,136,.2), var(--shadow);
+  border-color:var(--primary) !important;
+  outline:none;
+}
+
+.badge{
+  border-radius:8px; font-weight:600; letter-spacing:0.01em;
+}
+.btn-primary{
+  border-radius:16px !important;
+  box-shadow:0 6px 18px rgba(13,148,136,.28) !important;
+  transition:transform .15s, box-shadow .2s !important;
+}
+.btn-primary:active{ transform:scale(.97) !important; }
+
+.page{ animation:pageFade .25s ease both; }
+@keyframes pageFade{ from{ opacity:.6; } to{ opacity:1; } }
+
+.hdr h1{ font-weight:800; letter-spacing:-0.03em; }
+.app-brand-line{ opacity:.7; }
+
+/* Dark mode refinements */
+[data-theme="dark"] .card,
+.dark .card{
+  box-shadow:0 4px 20px rgba(0,0,0,.25);
+}
+[data-theme="dark"] .home-hero-icon,
+.dark .home-hero-icon{
+  box-shadow:0 10px 28px rgba(13,148,136,.25);
+}
+
 </style>
 </head>
 <body>
@@ -1559,6 +1721,8 @@ function riskClass(l){
 /* Localized medical text: ta / hi overlays */
 const ING_L10N = {
   ta: {
+    homeHeroTitle:"விநாடிகளில் மருந்து தகவல்",
+    homeHeroSub:"ஸ்ட்ரிப் பெயர் தேடுங்கள் · பயன் · பக்க விளைவு · மலிவான மாற்று",
     shelf:"ஷெல்ஃப்",
     shelfTitle:"என் ஷெல்ஃப்",
     shelfAddLbl:"ஷெல்ஃப்பில் மருந்து சேர்",
@@ -2075,6 +2239,8 @@ const ING_L10N = {
     },
   },
   hi: {
+    homeHeroTitle:"सेकंडों में दवा की जानकारी",
+    homeHeroSub:"पट्टी का नाम खोजें · उपयोग · साइड इफेक्ट · सस्ते विकल्प",
     shelf:"शेल्फ",
     shelfTitle:"मेरी शेल्फ",
     shelfAddLbl:"शेल्फ में दवा जोड़ें",
@@ -2591,6 +2757,8 @@ const ING_L10N = {
     },
   },
   kn: {
+    homeHeroTitle:"ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಔಷಧ ಮಾಹಿತಿ",
+    homeHeroSub:"ಸ್ಟ್ರಿಪ್ ಹೆಸರು ಹುಡುಕಿ · ಉಪಯೋಗ · ಅಡ್ಡಪರಿಣಾಮ",
     shelf:"ಶೆಲ್ಫ್",
     shelfTitle:"ನನ್ನ ಶೆಲ್ಫ್",
     shelfAddLbl:"ಶೆಲ್ಫ್‌ಗೆ ಔಷಧ ಸೇರಿಸಿ",
@@ -3107,6 +3275,8 @@ const ING_L10N = {
     },
   },
   te: {
+    homeHeroTitle:"సెకన్లలో మందు సమాచారం",
+    homeHeroSub:"స్ట్రిప్ పేరు వెతకండి · ఉపయోగాలు · దుష్ప్రభావాలు",
     shelf:"షెల్ఫ్",
     shelfTitle:"నా షెల్ఫ్",
     shelfAddLbl:"షెల్ఫ్‌కు మందు జోడించండి",
@@ -3623,6 +3793,8 @@ const ING_L10N = {
     },
   },
   ml: {
+    homeHeroTitle:"സെക്കൻഡുകളിൽ മരുന്ന് വിവരം",
+    homeHeroSub:"സ്ട്രിപ്പ് പേര് തിരയുക · ഉപയോഗം · പാർശ്വഫലം",
     shelf:"ഷെൽഫ്",
     shelfTitle:"എന്റെ ഷെൽഫ്",
     shelfAddLbl:"ഷെൽഫിൽ മരുന്ന് ചേർക്കുക",
@@ -4139,6 +4311,8 @@ const ING_L10N = {
     },
   },
   bn: {
+    homeHeroTitle:"সেকেন্ডে ওষুধের তথ্য",
+    homeHeroSub:"স্ট্রিপের নাম খুঁজুন · ব্যবহার · পার্শ্বপ্রতিক্রিয়া",
     shelf:"শেল্ফ",
     shelfTitle:"আমার শেল্ফ",
     shelfAddLbl:"शेल्फ में दवा जोड़ें",
@@ -4655,6 +4829,8 @@ const ING_L10N = {
     },
   },
   mr: {
+    homeHeroTitle:"सेकंदात औषध माहिती",
+    homeHeroSub:"पट्टीचे नाव शोधा · उपयोग · दुष्परिणाम",
     shelf:"शेल्फ",
     shelfTitle:"माझे शेल्फ",
     shelfAddLbl:"शेल्फ में दवा जोड़ें",
@@ -5171,6 +5347,8 @@ const ING_L10N = {
     },
   },
   gu: {
+    homeHeroTitle:"સેકન્ડમાં દવાની માહિતી",
+    homeHeroSub:"સ્ટ્રિપ નામ શોધો · ઉપયોગ · આડઅસર",
     shelf:"શેલ્ફ",
     shelfTitle:"મારી શેલ્ફ",
     shelfAddLbl:"शेल्फ में दवा जोड़ें",
@@ -5687,6 +5865,8 @@ const ING_L10N = {
     },
   },
   pa: {
+    homeHeroTitle:"ਸਕਿੰਟਾਂ ਵਿੱਚ ਦਵਾਈ ਜਾਣਕਾਰੀ",
+    homeHeroSub:"ਸਟ੍ਰਿਪ ਨਾਮ ਖੋਜੋ · ਵਰਤੋਂ · ਸਾਈਡ ਇਫੈਕਟ",
     shelf:"ਸ਼ੈਲਫ",
     shelfTitle:"ਮੇਰੀ ਸ਼ੈਲਫ",
     shelfAddLbl:"शेल्फ में दवा जोड़ें",
@@ -6233,6 +6413,8 @@ let cmpSel = []; // up to 2 medicine names
 /* ========== i18n (UI only) ========== */
 const T = {
   en:{
+    homeHeroTitle:"Find medicine info in seconds",
+    homeHeroSub:"Search any strip name · uses · side effects · cheaper alternatives",
     shelf:"Shelf",
     shelfTitle:"My Shelf",
     shelfAddLbl:"Add medicine to shelf",
@@ -7112,6 +7294,12 @@ function openDetail(name){
       <div style="font-size:.78rem;font-weight:650;color:#dc2626;line-height:1.45">⚠️ ${t("disclaimer")}</div>
       <div style="font-size:.7rem;color:var(--muted);margin-top:6px;line-height:1.4">For informational purposes only. Not a substitute for professional medical advice.</div>
     </div>
+
+    <div class="detail-sticky">
+      <button type="button" class="btn" onclick="shareMedicine('${escAttr(med.n)}')">📤 ${t("share")||"Share"}</button>
+      <button type="button" class="btn" onclick="toggleFav('${escAttr(med.n)}');openDetail('${escAttr(med.n)}')">${favs.includes(med.n)?"❤️":"🤍"} ${t("fav")||"Save"}</button>
+      <button type="button" class="btn primary" onclick="closeDetail();shelfSetReminder('${escAttr(med.n)}')">⏰ ${t("shelfRemBtn")||"Remind"}</button>
+    </div>
   `;
   document.getElementById("detailOverlay").classList.add("show");
 }
@@ -7121,6 +7309,22 @@ function closeDetail(){
 }
 
 /* ========== SEARCH ========== */
+
+function homeHeroHTML(){
+  const chips = ["Dolo 650","Crocin","Combiflam","Augmentin","Telma","Glycomet"];
+  const chipHtml = chips.map(n =>
+    `<button type="button" class="home-chip" onclick="document.getElementById('q').value='${n}';doSearch()">${n}</button>`
+  ).join("");
+  const title = t("homeHeroTitle") || "Find medicine info in seconds";
+  const sub = t("homeHeroSub") || "Search any strip name · uses · side effects · cheaper alternatives";
+  return `<div class="home-hero">
+    <div class="home-hero-icon">💊</div>
+    <h2>${title}</h2>
+    <p>${sub}</p>
+    <div class="home-chips">${chipHtml}</div>
+  </div>`;
+}
+
 function doSearch(){
   const qRaw = document.getElementById("q").value||"";
   const q = qRaw.toLowerCase().replace(/\s+/g," ").trim();
@@ -7129,7 +7333,7 @@ function doSearch(){
   if(q.length<1){
     const cnt = totalKnownCount();
     status.textContent = t("ready",{n: (cnt.total||cnt.loaded).toLocaleString()});
-    results.innerHTML = "";
+    results.innerHTML = homeHeroHTML();
     return;
   }
   // 1) Instant search on core + already loaded extras (never block UI)
