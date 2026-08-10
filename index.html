@@ -753,6 +753,58 @@ body{ -webkit-font-smoothing:antialiased; letter-spacing:-0.01em; }
   box-shadow:0 10px 28px rgba(13,148,136,.25);
 }
 
+
+/* Ultra premium: toast, about, sticky header */
+.toast-wrap{
+  position:fixed; left:50%; bottom:calc(72px + env(safe-area-inset-bottom));
+  transform:translateX(-50%) translateY(20px);
+  z-index:10000; pointer-events:none; opacity:0;
+  transition:opacity .28s, transform .28s cubic-bezier(.22,1,.36,1);
+  max-width:min(92vw, 360px);
+}
+.toast-wrap.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+.toast{
+  background:#0f172a; color:#fff; padding:12px 18px; border-radius:14px;
+  font-size:.88rem; font-weight:600; text-align:center;
+  box-shadow:0 12px 40px rgba(0,0,0,.25);
+  display:flex; align-items:center; gap:8px; justify-content:center;
+}
+.toast.ok{ background:linear-gradient(135deg,#059669,#0d9488); }
+.about-overlay{
+  position:fixed; inset:0; z-index:9000; background:rgba(15,23,42,.45);
+  backdrop-filter:blur(6px); display:none; align-items:flex-end; justify-content:center;
+}
+.about-overlay.show{ display:flex; }
+.about-sheet{
+  width:100%; max-width:480px; max-height:85vh; overflow-y:auto;
+  background:var(--bg); border-radius:24px 24px 0 0;
+  padding:12px 20px calc(28px + env(safe-area-inset-bottom));
+  animation:sheetUp .35s cubic-bezier(.22,1,.36,1);
+  box-shadow:0 -8px 40px rgba(0,0,0,.15);
+}
+@keyframes sheetUp{ from{ transform:translateY(40%); opacity:.5; } to{ transform:none; opacity:1; } }
+.about-sheet h2{ font-size:1.25rem; font-weight:800; margin:8px 0 4px; }
+.about-brand{ font-size:.75rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--primary); margin-bottom:12px; }
+.about-row{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:14px 0; border-bottom:1px solid var(--border); font-size:.92rem;
+}
+.about-row span:last-child{ color:var(--muted); font-weight:600; }
+.about-disc{
+  margin-top:16px; padding:14px; border-radius:14px;
+  background:rgba(245,158,11,.08); border:1px solid rgba(245,158,11,.2);
+  font-size:.8rem; line-height:1.5;
+}
+.detail-top-sticky{
+  position:sticky; top:0; z-index:6;
+  background:var(--bg); padding:8px 0 12px; margin:0 -4px;
+  border-bottom:1px solid transparent;
+}
+.detail-top-sticky.stuck{
+  border-bottom-color:var(--border);
+  box-shadow:0 4px 16px rgba(15,23,42,.06);
+}
+
 </style>
 </head>
 <body>
@@ -789,6 +841,7 @@ body{ -webkit-font-smoothing:antialiased; letter-spacing:-0.01em; }
           <option value="pa">ਪੰਜਾਬੀ</option>
         </select>
         <button class="icon-btn" onclick="toggleTheme()" title="Theme">🌓</button>
+        <button type="button" class="icon-btn" onclick="openAbout()" title="About">ℹ️</button>
         <button type="button" class="elder-btn" id="elderBtn" onclick="toggleElder()" title="Elder Mode">Aa+</button>
       </div>
     </div>
@@ -980,6 +1033,23 @@ body{ -webkit-font-smoothing:antialiased; letter-spacing:-0.01em; }
     <div class="sheet-handle"></div>
     <h2 id="langPickerTitle" style="margin-bottom:12px;font-size:1.1rem">Language</h2>
     <div id="langList"></div>
+  </div>
+</div>
+
+
+<div class="toast-wrap" id="toastWrap" aria-live="polite"><div class="toast ok" id="toastInner"><span class="t-icon">✓</span><span id="toastMsg">Saved</span></div></div>
+<div class="about-overlay" id="aboutOverlay" onclick="if(event.target===this)closeAbout()">
+  <div class="about-sheet" onclick="event.stopPropagation()">
+    <div class="sheet-handle"></div>
+    <div class="about-brand">JMR Apps</div>
+    <h2>Dawa Info</h2>
+    <p style="font-size:.85rem;color:var(--muted);margin:0 0 16px">Smart apps · Better life</p>
+    <div class="about-row"><span>Version</span><span>1.2.0</span></div>
+    <div class="about-row"><span>Medicines</span><span id="aboutMedCount">—</span></div>
+    <div class="about-row" onclick="toggleTheme()" style="cursor:pointer"><span>Theme</span><span id="aboutThemeVal">Light / Dark</span></div>
+    <div class="about-row" onclick="openLangPicker();closeAbout()" style="cursor:pointer"><span>Language</span><span id="aboutLangVal">—</span></div>
+    <div class="about-disc" id="aboutDisc">⚠️ This is not medical advice. Always consult a doctor or pharmacist.</div>
+    <button type="button" class="btn-primary" style="width:100%;margin-top:18px" onclick="closeAbout()">Close</button>
   </div>
 </div>
 
@@ -1721,6 +1791,8 @@ function riskClass(l){
 /* Localized medical text: ta / hi overlays */
 const ING_L10N = {
   ta: {
+    toastSaved:"ஷெல்ஃப்பில் சேமிக்கப்பட்டது",
+    toastRemoved:"ஷெல்ஃப்பில் இருந்து நீக்கப்பட்டது",
     homeHeroTitle:"விநாடிகளில் மருந்து தகவல்",
     homeHeroSub:"ஸ்ட்ரிப் பெயர் தேடுங்கள் · பயன் · பக்க விளைவு · மலிவான மாற்று",
     shelf:"ஷெல்ஃப்",
@@ -2239,6 +2311,8 @@ const ING_L10N = {
     },
   },
   hi: {
+    toastSaved:"शेल्फ में सेव",
+    toastRemoved:"शेल्फ से हटाया",
     homeHeroTitle:"सेकंडों में दवा की जानकारी",
     homeHeroSub:"पट्टी का नाम खोजें · उपयोग · साइड इफेक्ट · सस्ते विकल्प",
     shelf:"शेल्फ",
@@ -2757,6 +2831,8 @@ const ING_L10N = {
     },
   },
   kn: {
+    toastSaved:"ಶೆಲ್ಫ್‌ನಲ್ಲಿ ಉಳಿಸಲಾಗಿದೆ",
+    toastRemoved:"ತೆಗೆದುಹಾಕಲಾಗಿದೆ",
     homeHeroTitle:"ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಔಷಧ ಮಾಹಿತಿ",
     homeHeroSub:"ಸ್ಟ್ರಿಪ್ ಹೆಸರು ಹುಡುಕಿ · ಉಪಯೋಗ · ಅಡ್ಡಪರಿಣಾಮ",
     shelf:"ಶೆಲ್ಫ್",
@@ -3275,6 +3351,8 @@ const ING_L10N = {
     },
   },
   te: {
+    toastSaved:"షెల్ఫ్‌లో సేవ్",
+    toastRemoved:"తొలగించబడింది",
     homeHeroTitle:"సెకన్లలో మందు సమాచారం",
     homeHeroSub:"స్ట్రిప్ పేరు వెతకండి · ఉపయోగాలు · దుష్ప్రభావాలు",
     shelf:"షెల్ఫ్",
@@ -3793,6 +3871,8 @@ const ING_L10N = {
     },
   },
   ml: {
+    toastSaved:"ഷെൽഫിൽ സേവ്",
+    toastRemoved:"നീക്കം ചെയ്തു",
     homeHeroTitle:"സെക്കൻഡുകളിൽ മരുന്ന് വിവരം",
     homeHeroSub:"സ്ട്രിപ്പ് പേര് തിരയുക · ഉപയോഗം · പാർശ്വഫലം",
     shelf:"ഷെൽഫ്",
@@ -4311,6 +4391,8 @@ const ING_L10N = {
     },
   },
   bn: {
+    toastSaved:"শেল্ফে সেভ",
+    toastRemoved:"মুছে ফেলা হয়েছে",
     homeHeroTitle:"সেকেন্ডে ওষুধের তথ্য",
     homeHeroSub:"স্ট্রিপের নাম খুঁজুন · ব্যবহার · পার্শ্বপ্রতিক্রিয়া",
     shelf:"শেল্ফ",
@@ -4829,6 +4911,8 @@ const ING_L10N = {
     },
   },
   mr: {
+    toastSaved:"शेल्फमध्ये सेव्ह",
+    toastRemoved:"काढले",
     homeHeroTitle:"सेकंदात औषध माहिती",
     homeHeroSub:"पट्टीचे नाव शोधा · उपयोग · दुष्परिणाम",
     shelf:"शेल्फ",
@@ -5347,6 +5431,8 @@ const ING_L10N = {
     },
   },
   gu: {
+    toastSaved:"શેલ્ફમાં સેવ",
+    toastRemoved:"કાઢ્યું",
     homeHeroTitle:"સેકન્ડમાં દવાની માહિતી",
     homeHeroSub:"સ્ટ્રિપ નામ શોધો · ઉપયોગ · આડઅસર",
     shelf:"શેલ્ફ",
@@ -5865,6 +5951,8 @@ const ING_L10N = {
     },
   },
   pa: {
+    toastSaved:"ਸ਼ੈਲਫ ਵਿੱਚ ਸੇਵ",
+    toastRemoved:"ਹਟਾਇਆ",
     homeHeroTitle:"ਸਕਿੰਟਾਂ ਵਿੱਚ ਦਵਾਈ ਜਾਣਕਾਰੀ",
     homeHeroSub:"ਸਟ੍ਰਿਪ ਨਾਮ ਖੋਜੋ · ਵਰਤੋਂ · ਸਾਈਡ ਇਫੈਕਟ",
     shelf:"ਸ਼ੈਲਫ",
@@ -6413,6 +6501,8 @@ let cmpSel = []; // up to 2 medicine names
 /* ========== i18n (UI only) ========== */
 const T = {
   en:{
+    toastSaved:"Saved to shelf",
+    toastRemoved:"Removed from shelf",
     homeHeroTitle:"Find medicine info in seconds",
     homeHeroSub:"Search any strip name · uses · side effects · cheaper alternatives",
     shelf:"Shelf",
@@ -7202,12 +7292,14 @@ function openDetail(name){
   sheet.innerHTML = `
     <div class="sheet-handle"></div>
     <button class="close-btn" onclick="closeDetail()">✕</button>
-    <h2>${esc(med.n)}</h2>
-    <div class="card-sub">${esc(med.m||"")}</div>
-    <div class="badges" style="margin-top:8px">
-      <span class="badge ${rx?"rx":"otc"}">${rx?t("rx"):t("otc")}</span>
-      ${med.p?`<span class="badge">₹${esc(med.p)}</span>`:""}
-      ${med.k?`<span class="badge">${esc(med.k)}</span>`:""}
+    <div class="detail-top-sticky" id="detailTopSticky">
+      <h2>${esc(med.n)}</h2>
+      <div class="card-sub">${esc(med.m||"")}</div>
+      <div class="badges" style="margin-top:8px">
+        <span class="badge ${rx?"rx":"otc"}">${rx?t("rx"):t("otc")}</span>
+        ${med.p?`<span class="badge">₹${esc(med.p)}</span>`:""}
+        ${med.k?`<span class="badge">${esc(med.k)}</span>`:""}
+      </div>
     </div>
 
     <div class="section">
@@ -7302,6 +7394,13 @@ function openDetail(name){
     </div>
   `;
   document.getElementById("detailOverlay").classList.add("show");
+  try{
+    const sheet = document.getElementById("detailSheet");
+    const top = document.getElementById("detailTopSticky");
+    if(sheet && top){
+      sheet.onscroll = function(){ top.classList.toggle("stuck", sheet.scrollTop > 8); };
+    }
+  }catch(e){}
 }
 
 function closeDetail(){
@@ -7399,12 +7498,13 @@ function renderRecentChips(){
 
 /* ========== FAV / CMP ========== */
 function toggleFav(name){
+  const adding = !favs.includes(name);
   if(favs.includes(name)) favs = favs.filter(x=>x!==name);
   else favs = [name, ...favs].slice(0,50);
   safeSet("medFavs", favs);
-  // refresh visible lists
-  if(document.getElementById("page-fav").classList.contains("on")) renderFavs();
-  doSearch();
+  if(document.getElementById("page-fav") && document.getElementById("page-fav").classList.contains("on")) renderFavs();
+  try{ doSearch(); }catch(e){}
+  try{ showToast(adding ? (t("toastSaved")||"Saved to shelf") : (t("toastRemoved")||"Removed"), true); }catch(e){}
 }
 function toggleCmp(name){
   if(cmpSel.includes(name)) cmpSel = cmpSel.filter(x=>x!==name);
@@ -7894,7 +7994,7 @@ function shelfAddPicked(){
   shelfPickName = "";
   if(document.getElementById("shelfQ")) document.getElementById("shelfQ").value = "";
   renderFavs();
-  // Ask to set reminder
+  try{ showToast(t("toastSaved")||"Saved", true); }catch(e){}
   if(confirm(t("shelfAddedRem"))){
     remPickName = name;
     const rq = document.getElementById("remQ");
@@ -7987,6 +8087,42 @@ function renderRecent(){
 }
 
 /* ========== NAV ========== */
+
+function showToast(msg, ok){
+  const wrap = document.getElementById("toastWrap");
+  const inner = document.getElementById("toastInner");
+  const tm = document.getElementById("toastMsg");
+  if(!wrap || !tm) return;
+  tm.textContent = msg || "OK";
+  if(inner) inner.className = "toast " + (ok === false ? "" : "ok");
+  wrap.classList.add("show");
+  clearTimeout(window._toastT);
+  window._toastT = setTimeout(function(){ wrap.classList.remove("show"); }, 2200);
+}
+function openAbout(){
+  const o = document.getElementById("aboutOverlay");
+  if(!o) return;
+  try{
+    const cnt = totalKnownCount();
+    const el = document.getElementById("aboutMedCount");
+    if(el) el.textContent = (cnt.total || cnt.loaded || "—").toLocaleString();
+    const lv = document.getElementById("aboutLangVal");
+    if(lv) lv.textContent = (typeof LANG_NAMES !== "undefined" && LANG_NAMES[lang]) ? LANG_NAMES[lang] : lang;
+    const tv = document.getElementById("aboutThemeVal");
+    if(tv){
+      const dark = document.documentElement.getAttribute("data-theme")==="dark" || document.body.classList.contains("dark");
+      tv.textContent = dark ? "Dark" : "Light";
+    }
+    const disc = document.getElementById("aboutDisc");
+    if(disc) disc.textContent = t("disclaimer") || disc.textContent;
+  }catch(e){}
+  o.classList.add("show");
+}
+function closeAbout(){
+  const o = document.getElementById("aboutOverlay");
+  if(o) o.classList.remove("show");
+}
+
 function navTo(page){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("on"));
   document.getElementById("page-"+page).classList.add("on");
@@ -8232,7 +8368,7 @@ function saveReminder(){
   renderReminders();
   try{ renderFavs(); }catch(e){}
   tryRequestNotif();
-  alert(t("remSaved"));
+  try{ showToast(t("remSaved")||"Reminder saved", true); }catch(e){ alert(t("remSaved")); }
 }
 function deleteReminder(id){
   reminders = reminders.filter(r=>r.id!==id);
